@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TheMangaListRowBody.vue shows title, status and chapters for released and last available 1`] = `
+<div class="row-body">
+  <div class="min-w-0 flex-1 px-4 lg_grid lg_grid-cols-8 lg_gap-4">
+    <div class="relative col-span-3 lg_flex lg_min-w-0 lg_items-center"><a href="example.url/manga/1" content="Manga Title" target="_blank" rel="noreferrer" class="text-sm font-medium leading-5 text-gray-700 select-auto hover_text-blue-600 lg_truncate">Manga Title</a></div>
+    <div class="flex col-span-1 mt-2 sm_mt-0">
+      <div class="text-sm font-normal leading-5 text-gray-900 items-center flex">
+        <base-badge-stub type="success" icon="">Reading</base-badge-stub>
+      </div>
+    </div>
+    <div class="col-span-2 inline-block mt-2 mr-1 sm_m-0 sm_block">
+      <chapter-stub chapter="1" url="example.url/chapter/1" type="current"></chapter-stub>
+      <div class="mt-2 flex items-center text-sm leading-5 text-gray-500">
+        <icon-calendar-stub class="flex-shrink-0 h-5 w-5 text-gray-400 mr-1.5"></icon-calendar-stub><span><time title="Dec 1, 2018 12:00 AM" datetime="2018-12-01T00:00:00.000Z">Read 2 years ago</time></span>
+      </div>
+    </div>
+    <div class="col-span-2 inline-block sm_block">
+      <chapter-stub chapter="2" url="example.url/chapter/2" type="released"></chapter-stub>
+      <div class="mt-2 flex items-center text-sm leading-5 text-gray-500">
+        <icon-calendar-stub class="flex-shrink-0 h-5 w-5 text-gray-400 mr-1.5"></icon-calendar-stub><span><time title="Jan 1, 2019 12:00 AM" datetime="2019-01-01T00:00:00.000Z">Released 2 years ago</time></span>
+      </div>
+    </div>
+  </div>
+</div>
+`;

@@ -1,0 +1,22 @@
+<template lang="pug" functional>
+  .min-w-0.flex-1.flex.items-center.select-none.ml-4.sm_ml-6.sm_py-2
+    .min-w-0.flex-1.px-4.lg_grid.lg_grid-cols-8.lg_gap-4
+      .py-2.relative.col-span-3.lg_flex.lg_min-w-0.lg_items-center
+        .animate-pulse.h-3.bg-gray-400.rounded(class='w-3/4')
+      .mt-2.block.animate-pulse.lg_hidden
+        .h-4.bg-gray-400.rounded-lg.w-24.mt-2
+      .block.space-x-1.mt-3.animate-pulse.lg_hidden
+        .h-4.bg-gray-400.rounded-lg.inline-block(class='w-1/4')
+        .h-4.bg-gray-400.rounded-lg.inline-block(class='w-1/4')
+      .hidden.animate-pulse.col-span-1.mt-2.lg_mt-0.lg_flex
+        .items-center.flex
+          .h-3.bg-gray-400.rounded-lg.w-24
+      .hidden.animate-pulse.col-span-2.mt-2.lg_mt-0.lg_block
+        .h-4.bg-gray-400.rounded-lg(class='w-1/4')
+        .mt-2.flex.items-center
+          .h-3.bg-gray-400.rounded(class='w-3/6')
+      .hidden.animate-pulse.col-span-2.mt-2.lg_mt-0.lg_block
+        .h-4.bg-gray-400.rounded-lg(class='w-1/4')
+        .mt-2.flex.items-center
+          .h-3.bg-gray-400.rounded(class='w-3/6')
+</template>
