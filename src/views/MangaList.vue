@@ -53,7 +53,7 @@
                 icon-cross.h-5.w-5.text-gray-400
       .mx-5.mb-5.max-sm_mx-2.max-sm_flex.max-sm_flex-col
         bulk-actions.mb-3.sm_mb-0(
-          v-show="entriesSelected"
+          v-show="tableCheckboxSelected"
           @delete="deleteEntries"
           @edit="editDialogVisible = true"
           @read="updateEntries"
@@ -74,7 +74,6 @@
       .flex-grow.sm_mx-5.mx-0
         the-manga-list(
           ref='mangaList'
-          @seriesSelected="handleSelection"
           @editEntry='showEditEntryDialog'
           @changePage='changePage'
           @sortingApplied='applySort'
@@ -92,7 +91,6 @@
       edit-manga-entries(
         ref='editMangaEntryModal'
         :visible='editDialogVisible'
-        :selectedEntries='selectedEntries'
         @editComplete="resetEntries('editDialogVisible')"
       )
       delete-manga-entries(
@@ -101,7 +99,6 @@
         @confirmDeletion='deleteDialogVisible = false; removeSeries()'
       )
       report-manga-entries(
-        :selectedEntries='selectedEntries'
         :visible='reportDialogVisible'
         @closeDialog="resetEntries('reportDialogVisible')"
       )
@@ -110,8 +107,10 @@
 <script>
   import VueScrollTo from 'vue-scrollto';
   import debounce from 'lodash/debounce';
-  import { mapActions, mapState, mapMutations } from 'vuex';
   import { Message, Select, Option } from 'element-ui';
+  import {
+    mapActions, mapState, mapGetters, mapMutations,
+  } from 'vuex';
 
   import Importers from '@/components/TheImporters';
   import BulkActions from '@/components/BulkActions';
@@ -140,11 +139,10 @@
     },
     data() {
       return {
-        selectedEntries: [],
         selectedTagIDs: [],
+        tableCheckboxSelected: false,
         selectedSort: { Unread: 'desc' },
         selectedStatus: 1,
-        entriesSelected: false,
         searchTerm: '',
         dialogVisible: false,
         importDialogVisible: false,
@@ -156,15 +154,16 @@
     computed: {
       ...mapState('lists', [
         'entries',
+        'selectedEntries',
         'entriesPagy',
         'tags',
         'statuses',
       ]),
+      ...mapGetters('lists', [
+        'selectedEntriesIDs',
+      ]),
       allStatuses() {
         return [{ enum: -1, name: 'All' }].concat(this.statuses);
-      },
-      selectedEntriesIDs() {
-        return this.selectedEntries.map((entry) => entry.id);
       },
       trackedEntriesIDs() {
         const trackedIDs = this.selectedEntries.map(
@@ -203,9 +202,17 @@
 
         this.setTagsLoading(false);
       },
+      selectedEntries() {
+        if (!this.$refs.mangaList.$refs.mangaListTable) return;
+
+        this.tableCheckboxSelected = !!this
+          .$refs.mangaList.$refs.mangaListTable.selection.length;
+      },
     },
     async created() {
       this.setTagsLoading(true);
+
+      this.setSelectedEntries([]);
 
       await this.getTags();
       await this.getEntries({ page: 1, status: 1 });
@@ -221,14 +228,11 @@
         'getEntries',
       ]),
       ...mapMutations('lists', [
+        'setSelectedEntries',
         'removeEntries',
         'setTagsLoading',
         'updateEntry',
       ]),
-      handleSelection(selectedEntries) {
-        this.entriesSelected = selectedEntries.length > 0;
-        this.selectedEntries = selectedEntries;
-      },
       deleteEntries() {
         if (this.trackedEntriesIDs.length > this.selectedEntriesIDs.length) {
           this.deleteDialogVisible = true;
@@ -294,11 +298,11 @@
         this.$refs.mangaList.$refs.mangaListTable.clearSelection();
       },
       resetSelectedAttributes() {
-        this.selectedEntries = [];
+        this.setSelectedEntries([]);
         this.clearTableSelection();
       },
       showEditEntryDialog(entry) {
-        this.selectedEntries = [entry];
+        this.setSelectedEntries([entry]);
         this.editDialogVisible = true;
       },
     },

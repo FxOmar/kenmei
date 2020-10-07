@@ -4,7 +4,7 @@
       ref="mangaListTable"
       :data="entries"
       v-loading='tagsLoading'
-      @selection-change="handleSelectionChange"
+      @selection-change="setSelectedEntries($event)"
     )
       template(slot='empty')
         span.mt-2.leading-normal
@@ -169,6 +169,7 @@
     methods: {
       ...mapMutations('lists', [
         'updateEntry',
+        'setSelectedEntries',
       ]),
       entryStatusName(e) {
         return this.statuses.find((s) => s.enum === e.attributes.status).name;
@@ -216,9 +217,6 @@
         }
 
         this.entryUpdated = null;
-      },
-      handleSelectionChange(entries) {
-        this.$emit('seriesSelected', entries);
       },
       editMangaEntry(entry) {
         this.$emit('editEntry', entry);
