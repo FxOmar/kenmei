@@ -19,6 +19,18 @@ describe('lists', () => {
         expect(findEntryFromIDs([entry.id])).toEqual(entry);
       });
     });
+
+    describe('selectedEntriesIDs', () => {
+      it('returns IDs of the selected entries', () => {
+        const entry1 = factories.entry.build({ id: 1 });
+        const entry2 = factories.entry.build({ id: 2 });
+        const state = { selectedEntries: [entry1, entry2] };
+
+        const selectedEntriesIDs = lists.getters.selectedEntriesIDs(state);
+
+        expect(selectedEntriesIDs).toEqual([entry1.id, entry2.id]);
+      });
+    });
   });
 
   describe('mutations', () => {
@@ -44,6 +56,17 @@ describe('lists', () => {
       });
     });
 
+    describe('setSelectedEntries', () => {
+      it('sets selectedEntries state', () => {
+        const newEntries = factories.entry.buildList(1);
+        const state = { selectedEntries: [] };
+
+        lists.mutations.setSelectedEntries(state, newEntries);
+
+        expect(state.selectedEntries).toEqual(newEntries);
+      });
+    });
+
     describe('setEntriesPagy', () => {
       it('sets entries pagy state', () => {
         const newEntriesPagy = { count: 1, page: 1 };
@@ -63,6 +86,17 @@ describe('lists', () => {
         lists.mutations.addEntry(state, newEntry);
 
         expect(state.entries[0]).toEqual(newEntry);
+      });
+    });
+
+    describe('addSelectedEntry', () => {
+      it('pushes a manga entry to the selectedEntries array', () => {
+        const newEntry = factories.entry.build({ id: 2 });
+        const state = { selectedEntries: factories.entry.buildList(1) };
+
+        lists.mutations.addSelectedEntry(state, newEntry);
+
+        expect(state.selectedEntries[1]).toEqual(newEntry);
       });
     });
 
