@@ -1,27 +1,24 @@
-import BulkActions from '@/components/BulkActions.vue';
+import TheMangaListBulkActions from '@/components/manga_list/TheMangaListBulkActions.vue';
 
-describe('BulkActions.vue', () => {
+describe('TheMangaListBulkActions.vue', () => {
   it('renders renders bulk actions button group', () => {
-    const bulkActions = shallowMount(BulkActions);
+    const bulkActions = shallowMount(TheMangaListBulkActions);
 
     expect(bulkActions.html()).toMatchSnapshot();
   });
 
   describe('when pressing a button', () => {
     it('emits associated action', async () => {
-      const bulkActions = shallowMount(BulkActions);
+      const bulkActions = shallowMount(TheMangaListBulkActions);
 
       await bulkActions.findAll('button').at(0).trigger('click');
-      expect(bulkActions.emitted('delete')).toBeTruthy();
-
       await bulkActions.findAll('button').at(1).trigger('click');
-      expect(bulkActions.emitted('edit')).toBeTruthy();
-
       await bulkActions.findAll('button').at(2).trigger('click');
-      expect(bulkActions.emitted('read')).toBeTruthy();
-
       await bulkActions.findAll('button').at(3).trigger('click');
-      expect(bulkActions.emitted('report')).toBeTruthy();
+
+      expect(bulkActions.emitted('click').flat()).toEqual(
+        ['bulkUpdate', 'bulkEdit', 'bulkDelete', 'bulkReport'],
+      );
     });
   });
 });
