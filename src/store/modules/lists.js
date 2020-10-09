@@ -20,6 +20,8 @@ const state = {
     { enum: 5, name: 'Dropped' },
   ],
   tagsLoading: false,
+  entriesLoading: true,
+  checkboxToggled: false,
 };
 
 const getters = {
@@ -27,6 +29,7 @@ const getters = {
     (entry) => ids.includes(entry.id),
   ),
   selectedEntriesIDs: (state) => state.selectedEntries.map((entry) => entry.id),
+  selectionModeActive: (state) => state.selectedEntries.length > 0 && state.checkboxToggled,
 };
 
 const actions = {
@@ -37,6 +40,8 @@ const actions = {
     return status === 200 ? commit('setTags', data) : Message.error(data.error);
   },
   async getEntries({ commit }, { page, status, tagIDs, searchTerm, sort }) {
+    commit('setEntriesLoading', true);
+
     const response = await mangaEntries.index(
       page, status, tagIDs, searchTerm, sort,
     );
@@ -47,6 +52,8 @@ const actions = {
     } else {
       Message.error(response.data.error);
     }
+
+    commit('setEntriesLoading', false);
   },
 };
 
@@ -56,9 +63,11 @@ const mutations = {
   },
   setEntries(state, data) {
     state.entries = data;
+    state.selectedEntries = [];
   },
-  setSelectedEntries(state, data) {
-    state.selectedEntries = data;
+  setSelectedEntries(state, { entries, isCheckbox }) {
+    state.checkboxToggled = isCheckbox;
+    state.selectedEntries = entries;
   },
   setEntriesPagy(state, data) {
     state.entriesPagy = data;
@@ -66,8 +75,9 @@ const mutations = {
   addEntry(state, data) {
     state.entries.unshift(data);
   },
-  addSelectedEntry(state, data) {
-    state.selectedEntries.push(data);
+  addSelectedEntry(state, { entry, isCheckbox }) {
+    state.checkboxToggled = isCheckbox;
+    state.selectedEntries.push(entry);
   },
   updateEntry(state, data) {
     state.entries.splice(getEntryIndex(state, data.id), 1, data);
@@ -77,6 +87,9 @@ const mutations = {
   },
   setTagsLoading(state, data) {
     state.tagsLoading = data;
+  },
+  setEntriesLoading(state, data) {
+    state.entriesLoading = data;
   },
 };
 
