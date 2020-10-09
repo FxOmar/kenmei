@@ -1,17 +1,19 @@
 <template lang="pug">
-  span(v-text="text" :class="classes")
+  span(:class="classes")
+    component.icon(v-if="icon" :is="icon")
+    slot
 </template>
 
 <script>
   export default {
     props: {
-      text: {
-        type: String,
-        required: true,
-      },
       type: {
         type: String,
         default: 'primary',
+      },
+      icon: {
+        type: String,
+        default: '',
       },
     },
     computed: {
@@ -33,5 +35,9 @@
   span {
     @apply inline-flex items-center rounded-full text-xs font-medium leading-4;
     @apply px-2.5 py-0.5;
+  }
+
+  .icon {
+    @apply -ml-1 mr-1 flex-shrink-0 self-center h-4 w-4;
   }
 </style>
