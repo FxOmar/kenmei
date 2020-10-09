@@ -1,8 +1,10 @@
 import Vue from 'vue';
 import VueAnalytics from 'vue-analytics';
+import VueScreen from 'vue-screen';
 import Rollbar from 'vue-rollbar';
 import { Loading } from 'element-ui';
 import VueTippy from 'vue-tippy';
+import Vue2TouchEvents from 'vue2-touch-events'
 import VueScrollTo from 'vue-scrollto';
 import Vuelidate from 'vuelidate';
 import Meta from 'vue-meta';
@@ -21,7 +23,17 @@ import i18n from '@/plugins/i18n.js';
 
 Vue.config.productionTip = false;
 
+Vue.use(Vue2TouchEvents, {
+  disableClick: true,
+  touchHoldTolerance: 300,
+});
 Vue.use(VueScrollTo);
+Vue.use(VueScreen, {
+  extend: 'tailwind',
+  mobile: (screen) => screen.xs || screen.sm,
+  tablet: (screen) => screen.xs || screen.sm || screen.md,
+  desktop: (screen) => screen.lg || screen.xl,
+});
 Vue.use(Meta);
 Vue.use(Vuelidate);
 Vue.use(VueTippy, {

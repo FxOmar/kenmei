@@ -11719,6 +11719,11 @@ vue-router@^3.4.9:
   resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-3.4.9.tgz#c016f42030ae2932f14e4748b39a1d9a0e250e66"
   integrity sha512-CGAKWN44RqXW06oC+u4mPgHLQQi2t6vLD/JbGRDAXm0YpMv0bgpKuU5bBd7AvMgfTz9kXVRIWKHqRwGEb8xFkA==
 
+vue-screen@^1.5.3:
+  version "1.5.3"
+  resolved "https://registry.yarnpkg.com/vue-screen/-/vue-screen-1.5.3.tgz#0fc576c4620d9327b6c9c05a06c2fc35b87724d4"
+  integrity sha512-n9vKn6usE31Uy50D5g3uXalC++M0mEVXqNgGsWNPuo/JcV/6qQrsfY/PTe88n3d4qAF03Nje84sCzC/mLXmL2A==
+
 vue-scrollto@^2.19.1:
   version "2.19.1"
   resolved "https://registry.yarnpkg.com/vue-scrollto/-/vue-scrollto-2.19.1.tgz#8c6ee7e7120a38accea1a9c47f45aeeb660fd312"
@@ -11760,7 +11765,17 @@ vue-tippy@^4.7.1:
     humps "^2.0.1"
     tippy.js "^4.3.5"
 
-vue@^2.5.16, vue@^2.6.12:
+vue2-touch-events@^3.0.0:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/vue2-touch-events/-/vue2-touch-events-3.0.1.tgz#080db9bfc0125ee67efccfe28ba6c2d62dfae49c"
+  integrity sha512-jQjTgv9ncel9k/7T2hSaal2ISZiW89MGTvEmTPYP1XVVjXZwirZ1lcyfDCMn4yWKimhjhq/b+5Efcm0KBz7lPQ==
+
+vue@^2.5.16:
+  version "2.6.11"
+  resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.11.tgz#76594d877d4b12234406e84e35275c6d514125c5"
+  integrity sha512-VfPwgcGABbGAue9+sfrD4PuwFar7gPb1yl1UK1MwXoQPAw0BKSqWfoYCT/ThFrdEVWoI51dBuyCoiNU9bZDZxQ==
+
+vue@^2.6.12:
   version "2.6.12"
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.12.tgz#f5ebd4fa6bd2869403e29a896aed4904456c9123"
   integrity sha512-uhmLFETqPPNyuLLbsKz6ioJ4q7AZHzD8ZVFNATNyICSZouqP2Sz0rotWQC8UNBF6VGSCs5abnKJoStA6JbCbfg==
