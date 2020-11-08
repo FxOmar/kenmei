@@ -49,6 +49,7 @@
         'currentUser',
       ]),
       unconfirmedEmail() {
+        if (!this.currentUser) return;
         if (!this.currentUser.unconfirmedEmail) return;
 
         // eslint-disable-next-line consistent-return
