@@ -39,6 +39,10 @@ export default new Router({
       beforeEnter() { location.href = 'https://news.kenmei.co/changelog' }
     },
     {
+      path: '/status',
+      beforeEnter() { location.href = 'https://status.kenmei.co' }
+    },
+    {
       path: '/blog',
       beforeEnter() { location.href = 'https://news.kenmei.co/updates' }
     },
