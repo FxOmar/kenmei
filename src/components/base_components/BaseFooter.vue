@@ -122,18 +122,19 @@
       linkGroupOne: {
         type: Object,
         default: () => ({
-          company: {
+          product: {
             heading: 'Product',
             links: {
               about: { heading: 'About', href: '/about' },
               blog: { heading: 'Blog', href: '/blog' },
             },
           },
-          support: {
+          resources: {
             heading: 'Resources',
             links: {
               changelog: { heading: 'Changelog', href: '/changelog' },
               sources: { heading: 'Supported Sites', href: '/supported-sites' },
+              status: { heading: 'Status', href: '/status' },
             },
           },
         }),
