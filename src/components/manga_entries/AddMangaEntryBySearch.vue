@@ -15,24 +15,16 @@
     )
       template(slot='icon')
         icon-search.h-5.w-5
-    .mt-5.text-left.w-full.sm_block(:class="responsiveClasses")
-      label.block.text-sm.font-medium.leading-5.text-gray-700
-        | Source Name
-        transition(name='slide')
-          span.leading-none.ml-1.text-xs.text-red-600(v-if="hasErrors")
-            | required
-      .mt-1.relative.rounded-md.shadow-sm.w-auto
-        el-select.rounded.w-full(
-          v-model="$v.mangaSourceID.$model"
-          :disabled="!availableSources.length"
-          placeholder="Select series first"
-        )
-          el-option(
-            v-for="source in availableSources"
-            :key="source.id"
-            :label="source.name"
-            :value="source.id"
-          )
+    base-form-input-select.mt-5(
+      v-model="$v.mangaSourceID.$model"
+      label="Source Name"
+      placeholder="Select series first"
+      valueKey="id"
+      textKey="name"
+      :class="responsiveClasses"
+      :disabled="!availableSources.length"
+      :items="availableSources"
+    )
 </template>
 
 <script>
@@ -59,7 +51,7 @@
         items: [],
         searchQuery: '',
         selectedSeriesID: '',
-        mangaSourceID: null,
+        mangaSourceID: '',
         loading: false,
       };
     },
