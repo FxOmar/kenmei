@@ -4,16 +4,12 @@
     .flex.flex-col.w-full.max-w-7xl.py-8
       .mx-2.mb-5.sm_mx-5.flex.justify-between.flex-col.sm_flex-row
         .flex.flex-col.w-full.sm_flex-row
-          el-select.w-full.sm_w-40(
+          base-form-input-select.w-full.sm_w-40(
             v-model="selectedStatus"
-            placeholder="Filter by status"
+            valueKey="enum"
+            textKey="name"
+            :items="allStatuses"
           )
-            el-option(
-              v-for="status in allStatuses"
-              :key="status.enum"
-              :label="status.name"
-              :value="status.enum"
-            )
           el-select.w-full.mt-3.sm_mt-0.sm_ml-3.sm_w-48(
             ref="tagFilter"
             v-model="selectedTagIDs"
