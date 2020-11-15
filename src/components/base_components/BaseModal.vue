@@ -87,7 +87,7 @@
   }
 
   .modal-body {
-    @apply bg-white rounded-lg overflow-hidden shadow-xl transform;
+    @apply bg-white rounded-lg overflow-y-hidden shadow-xl transform;
     @apply transition-all w-full;
 
     @screen sm {
