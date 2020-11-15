@@ -7,33 +7,37 @@
   )
     template(slot='body')
       .flex.flex-col.w-full
-        .mt-3.text-center.sm_mt-0.sm_text-left.w-full
-          label.block.text-sm.leading-5.font-medium.text-gray-700
-            | Status
-          .mt-1.relative.rounded-md.shadow-sm.w-auto
-            el-select.rounded.w-full(v-model="selectedStatus")
-              el-option(
-                v-for="status in statuses"
-                :key="status.enum"
-                :label="status.name"
-                :value="status.enum"
-              )
+        base-form-input-select(
+          v-model="selectedStatus"
+          label="Status"
+          valueKey="enum"
+          textKey="name"
+          :items="statuses"
+        )
         .mt-5.text-center.sm_text-left.w-full(v-if="!isBulkUpdate")
-          label.block.text-sm.leading-5.font-medium.text-gray-700
-            | Manga Source Name
-          .mt-1.relative.rounded-md.shadow-sm.w-auto
-            el-select.rounded.w-full(
-              v-model="mangaSourceID"
-              placeholder="Select new source"
-              :disabled="loadingSources"
-              filterable
-            )
-              el-option(
-                v-for="source in availableSources"
-                :key="source.id"
-                :label="source.name"
-                :value="source.id"
-              )
+          base-form-input-select(
+            v-model="mangaSourceID"
+            label="Manga Source Name"
+            placeholder="Select new source"
+            valueKey="id"
+            textKey="name"
+            :items="availableSources"
+          )
+          //- label.block.text-sm.leading-5.font-medium.text-gray-700
+            //- | Manga Source Name
+          //- .mt-1.relative.rounded-md.shadow-sm.w-auto
+            //- el-select.rounded.w-full(
+            //-   v-model="mangaSourceID"
+            //-   placeholder="Select new source"
+            //-   :disabled="loadingSources"
+            //-   filterable
+            //- )
+            //-   el-option(
+            //-     v-for="source in availableSources"
+            //-     :key="source.id"
+            //-     :label="source.name"
+            //-     :value="source.id"
+            //-   )
         .mt-5.text-center.sm_text-left.w-full(v-if="tags.length")
           label.block.text-sm.leading-5.font-medium.text-gray-700
             | Tags
@@ -64,6 +68,7 @@
 </template>
 
 <script>
+  import debounce from 'lodash/debounce';
   import { mapState, mapMutations } from 'vuex';
   import { Message, Select, Option } from 'element-ui';
   import { updateMangaEntry, bulkUpdateMangaEntry } from '@/services/api';
@@ -125,15 +130,24 @@
           if (entries !== oldEntries && !this.isBulkUpdate) {
             this.selectedStatus = this.selectedEntry.attributes.status;
           }
-        } else {
-          this.availableSources = [];
-          this.mangaSourceID = null;
-          this.selectedStatus = 1;
         }
       },
-      visible(val) {
-        if (val && !this.isBulkUpdate) { this.loadAvailableSources(); }
-      },
+      visible: debounce(function(val) { //eslint-disable-line
+        if (val && !this.isBulkUpdate) {
+          this.loadAvailableSources();
+        } else if (!val) {
+          const { data } = this.$options;
+          const original = data.call(this);
+
+          // Reset data to initial state
+          Object.assign(this.$data, original);
+          // this.forceRerender();
+          // this.$v.$reset();
+        }
+      }, 250),
+      // visible(val) {
+      //   if (val && !this.isBulkUpdate) { this.loadAvailableSources(); }
+      // },
     },
     methods: {
       ...mapMutations('lists', [
