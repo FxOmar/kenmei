@@ -29,17 +29,13 @@
         )
           template(slot='icon')
             icon-link.h-5.w-5
-        .mt-5.text-center.sm_text-left.w-full
-          label.block.text-sm.text-left.leading-5.font-medium.text-gray-700
-            | Status
-          .mt-1.relative.rounded-md.shadow-sm.w-auto
-            el-select.rounded.w-full(v-model="selectedStatus")
-              el-option(
-                v-for="status in statuses"
-                :key="status.enum"
-                :label="status.name"
-                :value="status.enum"
-              )
+        base-form-input-select.mt-5(
+          v-model="selectedStatus"
+          label="Status"
+          valueKey="enum"
+          textKey="name"
+          :items="statuses"
+        )
     template(slot='actions')
       span.flex.w-full.rounded-md.shadow-sm.sm_ml-3.sm_w-auto
         base-button(ref="addMangaButton" @click="addMangaEntry")
