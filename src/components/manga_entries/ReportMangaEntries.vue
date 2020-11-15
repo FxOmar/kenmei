@@ -7,16 +7,13 @@
   )
     template(slot='body')
       .mt-3.text-center.sm_mt-0.sm_text-left
-        el-select.rounded.w-full(
+        base-form-input-select(
           v-model="currentIssue"
+          valueKey="type"
+          textKey="label"
           placeholder="Select issue type"
+          :items="issues"
         )
-          el-option(
-            v-for="issue in issues"
-            :key="issue.type"
-            :label="issue.value"
-            :value="issue.type"
-          )
         p.text-xs.leading-5.text-gray-500.mt-2
           template(v-if="currentIssue === 0")
             | Select this option, if manga information is outdated or incorrect.
@@ -64,8 +61,8 @@
     data() {
       return {
         issues: [
-          { type: 0, value: 'Incorrect Manga Data' },
-          { type: 1, value: 'Duplicated Manga Series' },
+          { type: 0, label: 'Incorrect Manga Data' },
+          { type: 1, label: 'Duplicated Manga Series' },
         ],
         currentIssue: 0,
         loading: false,
