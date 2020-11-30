@@ -36,11 +36,11 @@
       return {
         landing: false,
         updateBanner: {
-          id: 10,
-          link: 'https://news.kenmei.co/monthly-updates/2020/october',
+          id: 11,
+          link: 'https://news.kenmei.co/monthly-updates/2020/november',
           message: `
-            Improvements to the series search, various back-end improvements
-            and more in the latest update
+            Status page release + improvements to auto-updating, site
+            availability tracking and source deprecation system.
           `,
           mobileText: 'Check out the latest monthly update',
         },
