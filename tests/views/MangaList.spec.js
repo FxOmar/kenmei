@@ -53,6 +53,7 @@ describe('MangaList.vue', () => {
           state: {
             tags: [tag1, tag2],
             entries: [entry1, entry2, entry3],
+            selectedEntries: [],
             statuses: lists.state.statuses,
           },
           actions: lists.actions,
@@ -75,10 +76,10 @@ describe('MangaList.vue', () => {
       mangaList = shallowMount(MangaList, {
         store,
         localVue,
-        data() { return { selectedEntries: [entry1] }; },
         methods: { clearTableSelection() { return true; } },
         stubs: ['router-link', 'router-view'],
       });
+      mangaList.vm.setSelectedEntries([entry1]);
 
       modal = mangaList.findComponent({ ref: 'addMangaEntryModal' });
     });
@@ -107,10 +108,10 @@ describe('MangaList.vue', () => {
       mangaList = shallowMount(MangaList, {
         store,
         localVue,
-        data() { return { selectedEntries: [entry1] }; },
         methods: { clearTableSelection() { return true; } },
         stubs: ['router-link', 'router-view'],
       });
+      mangaList.vm.setSelectedEntries([entry1]);
 
       modal = mangaList.findComponent({ ref: 'editMangaEntryModal' });
     });
@@ -128,14 +129,14 @@ describe('MangaList.vue', () => {
         mangaList.findComponent(EditMangaEntries).vm.$emit('editComplete');
 
         expect(mangaList.vm.$data.editDialogVisible).toBeFalsy();
-        expect(mangaList.vm.$data.selectedEntries).toEqual([]);
+        expect(mangaList.vm.selectedEntries).toEqual([]);
       });
 
       it('@editEntry - shows edit manga entry dialog with specific entry', () => {
         mangaList.findComponent(TheMangaList).vm.$emit('editEntry', entry1);
 
         expect(mangaList.vm.$data.editDialogVisible).toBeTruthy();
-        expect(mangaList.vm.$data.selectedEntries).toEqual([entry1]);
+        expect(mangaList.vm.selectedEntries).toEqual([entry1]);
       });
     });
   });
@@ -178,6 +179,7 @@ describe('MangaList.vue', () => {
             state: {
               tags: [],
               entries: [entry1, entry2],
+              selectedEntries: [],
               statuses: lists.state.statuses,
             },
             actions: lists.actions,
@@ -190,10 +192,11 @@ describe('MangaList.vue', () => {
       mangaList = shallowMount(MangaList, {
         store,
         localVue,
-        data() { return { selectedEntries: [entry1, entry2] }; },
         methods: { clearTableSelection() { return true; } },
         stubs: ['router-link', 'router-view'],
       });
+
+      mangaList.vm.setSelectedEntries([entry1, entry2]);
 
       updatedMangaEntries = [
         factories.entry.build({
@@ -279,10 +282,11 @@ describe('MangaList.vue', () => {
       mangaList = shallowMount(MangaList, {
         store,
         localVue,
-        data() { return { selectedEntries: [entry1] }; },
         methods: { clearTableSelection() { return true; } },
         stubs: ['router-link', 'router-view'],
       });
+
+      mangaList.vm.setSelectedEntries([entry1]);
     });
 
     describe('when entry has multiple sources tracked', () => {
@@ -292,10 +296,7 @@ describe('MangaList.vue', () => {
           attributes: { tracked_entries: [{ id: 3 }, { id: 12 }] },
         });
 
-        mangaList.setData({
-          selectedEntries: [entry1, entry3],
-        });
-
+        mangaList.vm.setSelectedEntries([entry1, entry3]);
         mangaList.vm.deleteEntries();
 
         expect(mangaList.vm.$data.deleteDialogVisible).toBeTruthy();
@@ -481,29 +482,6 @@ describe('MangaList.vue', () => {
       );
     });
   });
-  describe('@events', () => {
-    let mangaList;
-
-    beforeEach(() => {
-      mangaList = shallowMount(MangaList, {
-        store,
-        localVue,
-        stubs: ['router-link', 'router-view'],
-      });
-    });
-
-    it('@seriesSelected - toggles bulk actions and sets selected series', async () => {
-      expect(mangaList.find('bulk-actions-stub').element).not.toBeVisible();
-
-      await mangaList.findComponent(TheMangaList).vm.$emit(
-        'seriesSelected',
-        [entry1],
-      );
-
-      expect(mangaList.find('bulk-actions-stub').element).toBeVisible();
-      expect(mangaList.vm.$data.selectedEntries).toContain(entry1);
-    });
-  });
   describe(':lifecycle', () => {
     let actions;
 
@@ -516,6 +494,7 @@ describe('MangaList.vue', () => {
             state: {
               tags: factories.userTag.buildList(1),
               entries: [entry1, entry2],
+              selectedEntries: [],
               statuses: lists.state.statuses,
             },
             actions,

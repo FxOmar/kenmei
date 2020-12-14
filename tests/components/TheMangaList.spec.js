@@ -28,6 +28,7 @@ describe('TheMangaList.vue', () => {
               factories.userTag.build({ id: 2, name: 'Completed' }),
             ],
             entries: defaultEntries,
+            setSelectedEntries: [],
             statuses: lists.state.statuses,
             entriesPagy: { count: 1, page: 1 },
           },
@@ -183,16 +184,14 @@ describe('TheMangaList.vue', () => {
       });
     });
 
-    it('@handleSelectionChange - when selecting rows, emits seriesSelected', async () => {
-      mangaList.findAll('.el-checkbox').trigger('click');
+    it('@handleSelectionChange - when selecting rows, updates store', async () => {
+      await mangaList.findAll('.el-checkbox').trigger('click');
 
-      expect(mangaList.emitted('seriesSelected')[1][0]).toEqual(
-        [entry1, entry2],
-      );
+      expect(store.state.lists.selectedEntries).toEqual([entry1, entry2]);
     });
 
     it('@editEntry - when editing an entry, emits editEntry', async () => {
-      mangaList.findComponent({ ref: 'editEntryButton' }).trigger('click');
+      await mangaList.findComponent({ ref: 'editEntryButton' }).trigger('click');
 
       expect(mangaList.emitted('editEntry')).toBeTruthy();
       expect(mangaList.emitted('editEntry')[0]).toEqual([entry2]);

@@ -39,6 +39,7 @@
 </template>
 
 <script>
+  import { mapState, mapGetters } from 'vuex';
   import { Select, Option, Message } from 'element-ui';
 
   import {
@@ -56,10 +57,6 @@
         type: Boolean,
         default: false,
       },
-      selectedEntries: {
-        type: Array,
-        required: true,
-      },
     },
     data() {
       return {
@@ -72,9 +69,12 @@
       };
     },
     computed: {
-      selectedEntriesIDs() {
-        return this.selectedEntries.map((e) => e.id);
-      },
+      ...mapState('lists', [
+        'selectedEntries',
+      ]),
+      ...mapGetters('lists', [
+        'selectedEntriesIDs',
+      ]),
       issueInvalid() {
         return this.currentIssue === 1 && this.selectedEntriesIDs.length < 2;
       },

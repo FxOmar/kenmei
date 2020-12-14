@@ -64,7 +64,7 @@
 </template>
 
 <script>
-  import { mapState, mapMutations } from 'vuex';
+  import { mapState, mapMutations, mapGetters } from 'vuex';
   import { Message, Select, Option } from 'element-ui';
   import { updateMangaEntry, bulkUpdateMangaEntry } from '@/services/api';
   import { getMangaSources } from '@/services/endpoints/MangaSources';
@@ -76,10 +76,6 @@
       'el-option': Option,
     },
     props: {
-      selectedEntries: {
-        type: Array,
-        required: true,
-      },
       visible: {
         type: Boolean,
         default: false,
@@ -97,14 +93,15 @@
     },
     computed: {
       ...mapState('lists', [
+        'selectedEntries',
         'statuses',
         'tags',
       ]),
+      ...mapGetters('lists', [
+        'selectedEntriesIDs',
+      ]),
       selectedEntry() {
         return this.selectedEntries[0];
-      },
-      selectedEntriesIDs() {
-        return this.selectedEntries.map((entry) => entry.id);
       },
       selectedEntriesTagIDs() {
         if (!this.selectedEntries.length) return [];

@@ -10,6 +10,7 @@ export const getEntryIndex = (state, id) => state.entries.findIndex(
 const state = {
   tags: [],
   entries: [],
+  selectedEntries: [],
   entriesPagy: {},
   statuses: [
     { enum: 1, name: 'Reading' },
@@ -25,6 +26,7 @@ const getters = {
   findEntryFromIDs: (state) => (ids) => state.entries.find(
     (entry) => ids.includes(entry.id),
   ),
+  selectedEntriesIDs: (state) => state.selectedEntries.map((entry) => entry.id),
 };
 
 const actions = {
@@ -55,11 +57,17 @@ const mutations = {
   setEntries(state, data) {
     state.entries = data;
   },
+  setSelectedEntries(state, data) {
+    state.selectedEntries = data;
+  },
   setEntriesPagy(state, data) {
     state.entriesPagy = data;
   },
   addEntry(state, data) {
     state.entries.unshift(data);
+  },
+  addSelectedEntry(state, data) {
+    state.selectedEntries.push(data);
   },
   updateEntry(state, data) {
     state.entries.splice(getEntryIndex(state, data.id), 1, data);

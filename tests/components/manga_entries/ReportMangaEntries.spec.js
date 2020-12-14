@@ -1,22 +1,37 @@
+import Vuex from 'vuex';
 import { Message } from 'element-ui';
 import flushPromises from 'flush-promises';
 import ReportMangaEntries from '@/components/manga_entries/ReportMangaEntries.vue';
+import lists from '@/store/modules/lists';
 import * as mangaEntriesErrors from '@/services/endpoints/MangaEntriesErrors';
 
+const localVue = createLocalVue();
+
+localVue.use(Vuex);
+
 describe('ReportMangaEntries.vue', () => {
+  let store;
   let reportMangaEntries;
   let postMangaEntriesErrorsMock;
 
+  const entry1 = factories.entry.build({ id: 1 });
+
   beforeEach(() => {
+    store = new Vuex.Store({
+      modules: {
+        lists: {
+          namespaced: true,
+          state: { selectedEntries: [entry1] },
+          mutations: lists.mutations,
+          getters: lists.getters,
+        },
+      },
+    });
+
     reportMangaEntries = shallowMount(ReportMangaEntries, {
-      data() {
-        return {
-          currentIssue: 0,
-        };
-      },
-      propsData: {
-        selectedEntries: [factories.entry.build({ id: 1 })],
-      },
+      localVue,
+      store,
+      data() { return { currentIssue: 0 }; },
     });
   });
 
@@ -28,18 +43,29 @@ describe('ReportMangaEntries.vue', () => {
     expect(reportMangaEntries.text()).toContain('manga titles are duplicated');
   });
 
-  it('disables submit button if only one entry selected for duplicated report', async () => {
-    const button = reportMangaEntries.findComponent({ ref: 'reportEntriesButton' });
-
-    await reportMangaEntries.setData({ currentIssue: 1 });
-
-    expect(button.element).toHaveAttribute('disabled');
-
-    await reportMangaEntries.setProps({
-      selectedEntries: factories.entry.buildList(2),
+  describe('when only one entry selected for duplicated report', () => {
+    beforeEach(() => {
+      reportMangaEntries = shallowMount(ReportMangaEntries, {
+        localVue,
+        store,
+        data() { return { currentIssue: 0 }; },
+      });
     });
 
-    expect(button.element).not.toHaveAttribute('disabled');
+    it('disables submit button', async () => {
+      const button = reportMangaEntries
+        .findComponent({ ref: 'reportEntriesButton' });
+
+      await reportMangaEntries.setData({ currentIssue: 1 });
+
+      expect(button.element).toHaveAttribute('disabled');
+
+      store.state.lists.selectedEntries = factories.entry.buildList(2);
+
+      await flushPromises();
+
+      expect(button.element).not.toHaveAttribute('disabled');
+    });
   });
 
   describe('when reporting issues', () => {

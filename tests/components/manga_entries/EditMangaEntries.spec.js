@@ -26,56 +26,23 @@ describe('EditMangaEntries.vue', () => {
               factories.userTag.build({ id: 2 }),
             ],
             entries: [entry1, entry2],
+            selectedEntries: [],
           },
           mutations: lists.mutations,
+          getters: lists.getters,
         },
       },
     });
   });
 
   describe(':props', () => {
-    describe(':selectedEntries', () => {
-      let editMangaEntries;
-
-      beforeEach(() => {
-        editMangaEntries = shallowMount(EditMangaEntries, {
-          store,
-          localVue,
-          propsData: { selectedEntries: [] },
-        });
-      });
-
-      describe('when single entry selected', () => {
-        it('prefills status', async () => {
-          await editMangaEntries.setProps({ selectedEntries: [entry1] });
-
-          expect(editMangaEntries.vm.$data.selectedStatus).toEqual(
-            entry1.attributes.status,
-          );
-        });
-      });
-
-      describe('when entry deselected', () => {
-        it('resets data', async () => {
-          await editMangaEntries.setProps({ selectedEntries: [entry1] });
-          await editMangaEntries.setProps({ selectedEntries: [] });
-
-          expect(editMangaEntries.vm.selectedStatus).toEqual(1);
-          expect(editMangaEntries.vm.availableSources).toEqual([]);
-          expect(editMangaEntries.vm.mangaSourceID).toEqual(null);
-        });
-      });
-    });
-
     describe(':visible', () => {
       let editMangaEntries;
 
       beforeEach(() => {
-        editMangaEntries = shallowMount(EditMangaEntries, {
-          store,
-          localVue,
-          propsData: { selectedEntries: [entry1] },
-        });
+        store.state.lists.selectedEntries = [entry1];
+
+        editMangaEntries = shallowMount(EditMangaEntries, { store, localVue });
       });
 
       describe('when single entry selected', () => {
@@ -125,17 +92,57 @@ describe('EditMangaEntries.vue', () => {
     });
   });
 
+  describe('when selectedEntries are present', () => {
+    describe('and a single entry is selected', () => {
+      let editMangaEntries;
+
+      beforeEach(() => {
+        store.state.lists.selectedEntries = [entry1];
+
+        editMangaEntries = shallowMount(EditMangaEntries, { store, localVue });
+      });
+
+      it('prefills status', async () => {
+        expect(editMangaEntries.vm.$data.selectedStatus).toEqual(
+          entry1.attributes.status,
+        );
+      });
+    });
+
+    describe('and entry is deselected', () => {
+      let editMangaEntries;
+
+      beforeEach(() => {
+        store.state.lists.selectedEntries = [entry1];
+
+        editMangaEntries = shallowMount(EditMangaEntries, {
+          store,
+          localVue,
+          data() { return { selectedStatus: 2, mangaSourceID: 1 }; },
+        });
+      });
+
+      it('resets data', async () => {
+        store.state.lists.selectedEntries = [];
+
+        await flushPromises();
+
+        expect(editMangaEntries.vm.selectedStatus).toEqual(1);
+        expect(editMangaEntries.vm.availableSources).toEqual([]);
+        expect(editMangaEntries.vm.mangaSourceID).toEqual(null);
+      });
+    });
+  });
+
   describe('when updating single manga entry', () => {
     let editMangaEntries;
     let updateMangaEntryMock;
 
     beforeEach(() => {
+      store.state.lists.selectedEntries = [entry1];
+
       updateMangaEntryMock = jest.spyOn(api, 'updateMangaEntry');
-      editMangaEntries = shallowMount(EditMangaEntries, {
-        store,
-        localVue,
-        propsData: { selectedEntries: [entry1] },
-      });
+      editMangaEntries = shallowMount(EditMangaEntries, { store, localVue });
     });
 
     afterEach(() => {
@@ -167,12 +174,10 @@ describe('EditMangaEntries.vue', () => {
     let updatedMangaEntries;
 
     beforeEach(() => {
+      store.state.lists.selectedEntries = [entry1, entry2];
+
       updateMangaEntriesMock = jest.spyOn(api, 'bulkUpdateMangaEntry');
-      editMangaEntries = shallowMount(EditMangaEntries, {
-        store,
-        localVue,
-        propsData: { selectedEntries: [entry1, entry2] },
-      });
+      editMangaEntries = shallowMount(EditMangaEntries, { store, localVue });
 
       updatedMangaEntries = [
         factories.entry.build({ id: 1, attributes: { status: 2 } }),
