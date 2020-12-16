@@ -39,7 +39,7 @@
 </template>
 
 <script>
-  import { mapState, mapGetters } from 'vuex';
+  import { mapGetters } from 'vuex';
   import { Select, Option, Message } from 'element-ui';
 
   import {
@@ -69,9 +69,6 @@
       };
     },
     computed: {
-      ...mapState('lists', [
-        'selectedEntries',
-      ]),
       ...mapGetters('lists', [
         'selectedEntriesIDs',
       ]),
