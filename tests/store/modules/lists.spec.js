@@ -144,23 +144,6 @@ describe('lists', () => {
       });
     });
 
-    describe('removeEntries', () => {
-      it('removes a manga entry', () => {
-        const entryToStay = factories.entry.build({ id: '1' });
-        const state = {
-          entries: [
-            entryToStay,
-            factories.entry.build({ id: '2' }),
-            factories.entry.build({ id: '3' }),
-          ],
-        };
-
-        lists.mutations.removeEntries(state, ['2', '3']);
-
-        expect(state.entries).toEqual([entryToStay]);
-      });
-    });
-
     describe('setTagsLoading', () => {
       it('sets tagsLoading state', () => {
         const state = { tagsLoading: false };

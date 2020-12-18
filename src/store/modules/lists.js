@@ -75,11 +75,6 @@ const mutations = {
   replaceEntry(state, { currentEntry, newEntry }) {
     state.entries.splice(getEntryIndex(state, currentEntry.id), 1, newEntry);
   },
-  removeEntries(state, entryIDs) {
-    state.entries = state.entries.filter(
-      (mangaEntry, _index, _arr) => !entryIDs.includes(mangaEntry.id),
-    );
-  },
   setTagsLoading(state, data) {
     state.tagsLoading = data;
   },

@@ -54,6 +54,7 @@ describe('MangaList.vue', () => {
             tags: [tag1, tag2],
             entries: [entry1, entry2, entry3],
             selectedEntries: [],
+            entriesPagy: { page: 1 },
             statuses: lists.state.statuses,
           },
           actions: lists.actions,
@@ -305,9 +306,11 @@ describe('MangaList.vue', () => {
 
     describe('when entry does not have multiple sources tracked', () => {
       let bulkDeleteMangaEntriesMock;
+      let indexMangaEntriesSpy;
 
       beforeEach(() => {
         bulkDeleteMangaEntriesMock = jest.spyOn(api, 'bulkDeleteMangaEntries');
+        indexMangaEntriesSpy = jest.spyOn(mangaEntriesResource, 'index');
       });
 
       afterEach(() => {
@@ -327,14 +330,18 @@ describe('MangaList.vue', () => {
           expect(infoMessageMock).toHaveBeenCalledWith('1 entries deleted');
         });
 
-        it('removes deleted entries', async () => {
-          expect(mangaList.vm.entries).toContain(entry1);
-
+        it('fetches the new pagy object with updated entries', async () => {
           mangaList.vm.deleteEntries();
 
           await flushPromises();
 
-          expect(mangaList.vm.entries).not.toContain(entry1);
+          expect(indexMangaEntriesSpy).toHaveBeenCalledWith(
+            1,
+            mangaList.vm.$data.selectedStatus,
+            mangaList.vm.$data.selectedTagIDs,
+            mangaList.vm.$data.searchTerm,
+            mangaList.vm.$data.selectedSort,
+          );
         });
       });
 
