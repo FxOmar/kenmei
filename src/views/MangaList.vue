@@ -229,7 +229,6 @@
       ]),
       ...mapMutations('lists', [
         'setSelectedEntries',
-        'removeEntries',
         'setTagsLoading',
         'updateEntry',
       ]),
