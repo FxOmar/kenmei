@@ -245,7 +245,7 @@
 
         if (successful) {
           Message.info(`${this.trackedEntriesIDs.length} entries deleted`);
-          this.removeEntries(this.trackedEntriesIDs);
+          this.changePage(this.entriesPagy.page);
         } else {
           Message.error(
             'Deletion failed. Try reloading the page before trying again',
