@@ -47,7 +47,7 @@
           )
             template(slot='icon')
               icon-link.h-5.w-5
-    template(slot='actions' v-if="activeTab === 'mangaDex'")
+    template(slot='actions' v-if="activeTab === 'mangaDex' && !importInitiated")
       span.flex.w-full.rounded-md.shadow-sm.sm_w-auto
         base-button(ref="importMangaDexButton" @click="importMangaDex")
           | Import
