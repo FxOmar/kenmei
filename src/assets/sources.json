@@ -5,6 +5,12 @@
     "logo": "mangadex_logo.png"
   },
   {
+    "name": "WebToon",
+    "url": "https://www.webtoons.com/",
+    "status": "Supported",
+    "logo": "webtoon_logo.jpg"
+  },
+  {
     "name": "Sense Scans",
     "url": "http://sensescans.com/",
     "status": "Supported",
@@ -29,12 +35,6 @@
     "logo": "zero_scans_logo.jpg"
   },
   {
-    "name": "HelveticaScans",
-    "url": "https://helveticascans.com/",
-    "status": "Supported",
-    "logo": "helvetica_logo.png"
-  },
-  {
     "name": "Kirei Cake",
     "url": "https://kireicake.com/",
     "status": "Supported",
@@ -45,12 +45,6 @@
     "url": "https://www.deathtollscans.net/",
     "status": "Supported",
     "logo": "deathtolls_logo.jpg"
-  },
-  {
-    "name": "KKJ Scans",
-    "url": "https://kkjscans.co/",
-    "status": "Supported",
-    "logo": "kkj_scans_logo.jpg"
   },
   {
     "name": "Nonames Scans",
@@ -137,22 +131,10 @@
     "logo": "webnovel.jpg"
   },
   {
-    "name": "WebToon",
-    "url": "https://www.webtoons.com/",
-    "status": "Requested",
-    "logo": "webtoon_logo.jpg"
-  },
-  {
     "name": "MangaKakalot",
     "url": "https://mangakakalot.com/",
     "status": "Requested",
     "logo": "mangakakalot_logo.png"
-  },
-  {
-    "name": "MangaFox",
-    "url": "http://fanfox.net/",
-    "status": "Requested",
-    "logo": "mangafox.jpg"
   },
   {
     "name": "MangaPlus",
