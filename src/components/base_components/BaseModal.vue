@@ -108,7 +108,7 @@
   }
 
   .modal-slide-leave-active {
-    @apply ease-out duration-200;
+    @apply ease-in duration-200;
   }
 
   .modal-slide-enter,
@@ -119,7 +119,7 @@
       @apply translate-y-0 scale-95;
     }
   }
-
+  
   .modal-slide-enter-to,
   .modal-slide-leave {
     @apply opacity-100 translate-y-0;
@@ -129,13 +129,14 @@
     }
   }
 
-  .overlay-fade-enter-active,
-  .overlay-fade-leave-active {
-    @apply ease-out duration-200;
+  // Overlay fade transition
+
+  .overlay-fade-enter-active {
+    @apply ease-out duration-300;
   }
 
   .overlay-fade-leave-active {
-    @apply ease-out duration-200;
+    @apply ease-in duration-200;
   }
 
   .overlay-fade-enter,
@@ -143,8 +144,8 @@
     @apply opacity-0;
   }
 
-  .overlay-fade-enter-to,
-  .overlay-fade-leave {
+  .overlay-fade-leave,
+  .overlay-fade-enter-to {
     @apply opacity-100;
   }
 </style>
