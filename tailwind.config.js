@@ -41,12 +41,22 @@ module.exports = {
       margin: {
         '10px': '0.65rem',
       },
+      padding: {
+        7: '1.75rem',
+        1.6: '0.409rem',
+      },
+      opacity: {
+        95: '0.95',
+      },
       fontFamily: {
         inter: ['Inter var', ...defaultTheme.fontFamily.sans],
       },
     },
   },
-  variants: {},
+  variants: {
+    display: ['responsive', 'group-hover'],
+    opacity: ['responsive', 'hover', 'group-hover', 'focus'],
+  },
   plugins: [
     require('@tailwindcss/ui'),
   ],
