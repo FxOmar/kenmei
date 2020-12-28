@@ -14,7 +14,7 @@
           icon-sort-desc.mr-3.h-5.w-5.text-gray-400(v-else)
           | {{ selectedSort }}
         icon-chevron-down.chevron.transform(:class="{ '-rotate-180': open }")
-    button.fixed.inset-0.h-full.w-full.cursor-default.focus_outline-none(
+    button.fixed.inset-0.h-full.w-full.cursor-default.focus_outline-none.z-20(
       ref="clickOffButton"
       v-if='open'
       @click='open = false'

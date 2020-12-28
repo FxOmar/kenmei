@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BasePaginationPager.vue shows gap page 1`] = `
+<nav class="relative z-0 inline-flex shadow-sm rounded-l-md"><a href="javascript:void(0)" aria-label="Previous" class="px-2 py-1 rounded-l-md text-gray-500 hover_text-gray-400 border-l cursor-not-allowed">
+    <icon-chevron-left-stub class="h-5 w-5 opacity-50"></icon-chevron-left-stub>
+  </a><a href="javascript:void(0)" class="-ml-px px-4 py-1 text-gray-700 text-blue-500 pointer-events-none">1</a><a href="javascript:void(0)" class="-ml-px px-4 py-1 text-gray-700 text-gray-500 hover_text-gray-400">2</a><a href="javascript:void(0)" aria-label="Next" class="-ml-px px-2 py-1 rounded-r-md text-gray-500 hover_text-gray-400 border-r">
+    <icon-chevron-right-stub class="h-5 w-5"></icon-chevron-right-stub>
+  </a></nav>
+`;

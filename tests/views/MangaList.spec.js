@@ -3,8 +3,8 @@ import Vuex from 'vuex';
 import { Message } from 'element-ui';
 import flushPromises from 'flush-promises';
 import MangaList from '@/views/MangaList.vue';
-import TheMangaList from '@/components/TheMangaList.vue';
-import BulkActions from '@/components/BulkActions.vue';
+import TheMangaList from '@/components/manga_list/TheMangaList.vue';
+import MangaListActions from '@/components/MangaListActions.vue';
 import SortDropdown from '@/components/SortDropdown.vue';
 import AddMangaEntry from '@/components/manga_entries/AddMangaEntry.vue';
 import EditMangaEntries from '@/components/manga_entries/EditMangaEntries.vue';
@@ -77,18 +77,15 @@ describe('MangaList.vue', () => {
       mangaList = shallowMount(MangaList, {
         store,
         localVue,
-        methods: { clearTableSelection() { return true; } },
         stubs: ['router-link', 'router-view'],
       });
-      mangaList.vm.setSelectedEntries([entry1]);
+      mangaList.vm.setSelectedEntries({ entries: [entry1], isCheckbox: false });
 
       modal = mangaList.findComponent({ ref: 'addMangaEntryModal' });
     });
 
     it('shows add manga entry modal', async () => {
-      await mangaList
-        .findComponent({ ref: 'addMangaEntryModalButton' })
-        .trigger('click');
+      mangaList.findComponent(TheMangaList).vm.$emit('addManga');
 
       expect(modal.element).toBeVisible();
     });
@@ -109,16 +106,15 @@ describe('MangaList.vue', () => {
       mangaList = shallowMount(MangaList, {
         store,
         localVue,
-        methods: { clearTableSelection() { return true; } },
         stubs: ['router-link', 'router-view'],
       });
-      mangaList.vm.setSelectedEntries([entry1]);
+      mangaList.vm.setSelectedEntries({ entries: [entry1], isCheckbox: false });
 
       modal = mangaList.findComponent({ ref: 'editMangaEntryModal' });
     });
 
     it('shows edit manga entries modal', async () => {
-      await mangaList.findComponent(BulkActions).vm.$emit('edit');
+      await mangaList.findComponent(TheMangaList).vm.$emit('bulkEdit');
 
       expect(modal.element).toBeVisible();
     });
@@ -193,11 +189,10 @@ describe('MangaList.vue', () => {
       mangaList = shallowMount(MangaList, {
         store,
         localVue,
-        methods: { clearTableSelection() { return true; } },
         stubs: ['router-link', 'router-view'],
       });
 
-      mangaList.vm.setSelectedEntries([entry1, entry2]);
+      mangaList.vm.setSelectedEntries({ entries: [entry1, entry2], isCheckbox: true });
 
       updatedMangaEntries = [
         factories.entry.build({
@@ -283,11 +278,10 @@ describe('MangaList.vue', () => {
       mangaList = shallowMount(MangaList, {
         store,
         localVue,
-        methods: { clearTableSelection() { return true; } },
         stubs: ['router-link', 'router-view'],
       });
 
-      mangaList.vm.setSelectedEntries([entry1]);
+      mangaList.vm.setSelectedEntries({ entries: [entry1], isCheckbox: false });
     });
 
     describe('when entry has multiple sources tracked', () => {
@@ -297,7 +291,7 @@ describe('MangaList.vue', () => {
           attributes: { tracked_entries: [{ id: 3 }, { id: 12 }] },
         });
 
-        mangaList.vm.setSelectedEntries([entry1, entry3]);
+        mangaList.vm.setSelectedEntries({ entries: [entry1, entry3], isCheckbox: true });
         mangaList.vm.deleteEntries();
 
         expect(mangaList.vm.$data.deleteDialogVisible).toBeTruthy();
@@ -443,15 +437,15 @@ describe('MangaList.vue', () => {
     });
 
     it('fetches entries with the provided sorting', async () => {
-      const mangaList    = shallowMount(MangaList, {
+      const mangaList = shallowMount(MangaList, {
         store,
         localVue,
         stubs: ['router-link', 'router-view'],
       });
       const selectedSort = { Released: 'asc' };
 
-      await mangaList.findComponent(SortDropdown).vm.$emit(
-        'click',
+      await mangaList.findComponent(MangaListActions).vm.$emit(
+        'sortApplied',
         selectedSort,
       );
 
@@ -478,7 +472,7 @@ describe('MangaList.vue', () => {
         stubs: ['router-link', 'router-view'],
       });
 
-      await mangaList.findComponent(TheMangaList).vm.$emit('changePage', 2);
+      await mangaList.findComponent(TheMangaList).vm.$emit('pageChanged', 2);
 
       expect(indexMangaEntriesSpy).toHaveBeenCalledWith(
         2,

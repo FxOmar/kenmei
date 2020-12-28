@@ -1,25 +1,16 @@
 <template lang="pug">
-  transition(
-    enter-active-class='slide-transition'
-    enter-class='opacity-0 transform translate-y-8'
-    leave-active-class='slide-transition'
-    leave-to-class='opacity-0 transform translate-y-8'
-  )
-    span.relative.z-0.inline-flex.shadow-sm
-      button.flex.justify-center.group(
-        v-for='(button, index) in buttons'
-        @click="$emit(button.action)"
-        :key="index"
-        :class="buttonClasses(index)"
+  span.relative.z-0.inline-flex.shadow-sm.rounded-md
+    button.flex.justify-center.group(
+      v-for='(button, index) in buttons'
+      :key="index"
+      :class="buttonClasses(index)"
+      @click="$emit('click', button.action)"
+    )
+      component.-ml-1.mr-2.h-5.w-5.text-gray-400(
+        :is='button.icon'
+        :class="hoverClasses(button.action)"
       )
-        component.-ml-1.mr-2.h-5.w-5.text-gray-400(
-          :is='button.icon'
-          :class="hoverClasses(button.action)"
-        )
-        span(
-          v-text="button.text"
-          :class="hoverClasses(button.action)"
-        )
+      span(v-text="button.text" :class="hoverClasses(button.action)")
 </template>
 
 <script>
@@ -28,26 +19,25 @@
       return {
         buttons: [
           {
-            text: 'Delete',
-            action: 'delete',
-            icon: 'IconTrash',
-          },
-          {
-            text: 'Edit',
-            action: 'edit',
-            icon: 'IconEdit',
-          },
-          {
             text: 'Read',
-            action: 'read',
+            action: 'bulkUpdate',
             icon: 'IconCheckCircle',
           },
           {
+            text: 'Edit',
+            action: 'bulkEdit',
+            icon: 'IconEdit',
+          },
+          {
+            text: 'Delete',
+            action: 'bulkDelete',
+            icon: 'IconTrash',
+          },
+          {
             text: 'Report',
-            action: 'report',
+            action: 'bulkReport',
             icon: 'IconWarning',
           },
-
         ],
       };
     },
@@ -61,10 +51,10 @@
       },
       hoverClasses(action) {
         return {
-          'group-hover_text-red-400': action === 'delete',
-          'group-hover_text-gray-800': action === 'edit',
-          'group-hover_text-green-400': action === 'read',
-          'group-hover_text-yellow-400': action === 'report',
+          'group-hover_text-red-400': action === 'bulkDelete',
+          'group-hover_text-gray-800': action === 'bulkEdit',
+          'group-hover_text-green-400': action === 'bulkUpdate',
+          'group-hover_text-yellow-400': action === 'bulkReport',
         };
       },
     },

@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MangaListActions.vue renders component 1`] = `
+<div class="mx-2 mb-5 sm_mx-5 flex justify-between flex-col sm_flex-row">
+  <div class="flex flex-col w-full sm_flex-row">
+    <el-select-stub value="1" autocomplete="off" multiplelimit="0" placeholder="Filter by status" valuekey="value" popperappendtobody="true" class="w-full sm_w-40">
+      <el-option-stub value="-1" label="All"></el-option-stub>
+      <el-option-stub value="1" label="Reading"></el-option-stub>
+      <el-option-stub value="2" label="On Hold"></el-option-stub>
+      <el-option-stub value="3" label="Plan to Read"></el-option-stub>
+      <el-option-stub value="4" label="Completed"></el-option-stub>
+      <el-option-stub value="5" label="Dropped"></el-option-stub>
+    </el-select-stub>
+    <el-select-stub value="" autocomplete="off" filterable="true" multiple="true" multiplelimit="0" placeholder="Filter by tags" valuekey="value" collapsetags="true" popperappendtobody="true" class="w-full mt-3 sm_mt-0 sm_ml-3 sm_w-48"><template></template></el-select-stub>
+    <sort-dropdown-stub class="w-full mt-3 sm_mt-0 sm_ml-3 sm_w-40"></sort-dropdown-stub>
+  </div>
+  <div class="mt-3 text-center w-full float-right sm_mt-0 sm_text-left sm_w-64">
+    <base-form-input-stub value="" type="text" placeholder="Input manga title"><template></template>
+      <!---->
+    </base-form-input-stub>
+  </div>
+</div>
+`;

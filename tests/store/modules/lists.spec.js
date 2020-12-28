@@ -31,6 +31,29 @@ describe('lists', () => {
         expect(selectedEntriesIDs).toEqual([entry1.id, entry2.id]);
       });
     });
+
+    describe('selectionModeActive', () => {
+      describe('when there are selectedEntries and checkboxToggled is true', () => {
+        it('returns true', () => {
+          const entry1 = factories.entry.build({ id: 1 });
+          const state = { selectedEntries: [entry1], checkboxToggled: true };
+
+          const selectionModeActive = lists.getters.selectionModeActive(state);
+
+          expect(selectionModeActive).toBeTruthy();
+        });
+      });
+
+      describe('when no entries are selected or checkboxToggled is false', () => {
+        it('returns false', () => {
+          const state = { selectedEntries: [], checkboxToggled: false };
+
+          const selectionModeActive = lists.getters.selectionModeActive(state);
+
+          expect(selectionModeActive).toBeFalsy();
+        });
+      });
+    });
   });
 
   describe('mutations', () => {
@@ -48,22 +71,34 @@ describe('lists', () => {
     describe('setEntries', () => {
       it('sets entries state', () => {
         const newEntries = factories.entry.buildList(1);
-        const state = { entries: [] };
+        const state = { entries: [], selectedEntries: [] };
 
         lists.mutations.setEntries(state, newEntries);
 
         expect(state.entries).toEqual(newEntries);
       });
+
+      it('resets selectedEntries state', () => {
+        const newEntries = factories.entry.buildList(1);
+        const state = { entries: [], selectedEntries: [newEntries] };
+
+        lists.mutations.setEntries(state, newEntries);
+
+        expect(state.selectedEntries).toEqual([]);
+      });
     });
 
     describe('setSelectedEntries', () => {
-      it('sets selectedEntries state', () => {
+      it('sets selectedEntries and checkboxToggled state', () => {
         const newEntries = factories.entry.buildList(1);
-        const state = { selectedEntries: [] };
+        const state = { selectedEntries: [], checkboxToggled: false };
 
-        lists.mutations.setSelectedEntries(state, newEntries);
+        lists.mutations.setSelectedEntries(
+          state, { entries: newEntries, isCheckbox: true },
+        );
 
         expect(state.selectedEntries).toEqual(newEntries);
+        expect(state.checkboxToggled).toBeTruthy();
       });
     });
 
@@ -90,13 +125,26 @@ describe('lists', () => {
     });
 
     describe('addSelectedEntry', () => {
-      it('pushes a manga entry to the selectedEntries array', () => {
-        const newEntry = factories.entry.build({ id: 2 });
-        const state = { selectedEntries: factories.entry.buildList(1) };
+      let newEntry;
+      let state;
 
-        lists.mutations.addSelectedEntry(state, newEntry);
+      beforeEach(() => {
+        newEntry = factories.entry.build({ id: 2 });
+        state = { selectedEntries: factories.entry.buildList(1) };
+      });
+
+      it('pushes a manga entry to the selectedEntries array', () => {
+        lists.mutations
+          .addSelectedEntry(state, { entry: newEntry, isCheckbox: false });
 
         expect(state.selectedEntries[1]).toEqual(newEntry);
+      });
+
+      it('sets checkboxToggled state', () => {
+        lists.mutations
+          .addSelectedEntry(state, { entry: newEntry, isCheckbox: true });
+
+        expect(state.checkboxToggled).toBeTruthy();
       });
     });
 
@@ -151,6 +199,16 @@ describe('lists', () => {
         lists.mutations.setTagsLoading(state, true);
 
         expect(state.tagsLoading).toBeTruthy();
+      });
+    });
+
+    describe('setEntriesLoading', () => {
+      it('sets entriesLoading state', () => {
+        const state = { entriesLoading: false };
+
+        lists.mutations.setEntriesLoading(state, true);
+
+        expect(state.entriesLoading).toBeTruthy();
       });
     });
   });

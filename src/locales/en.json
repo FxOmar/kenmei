@@ -10,5 +10,10 @@
     "sameAs": "must be identical",
     "isNotURL": "can't be a url",
     "mustBeMangaDex": "must be a MDList url"
+  },
+  "entries": {
+    "read": "Set chapter to last read",
+    "lastReadNotAvailable": "No latest chapter available",
+    "lastReadLatest": "Already set to latest chapter"
   }
 }

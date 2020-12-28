@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BaseIconButtonGroup.vue when buttons provided shows icon buttons 1`] = `<span class="relative z-0 inline-flex shadow-md rounded-md"><button type="button" content="Edit" class="group hover_text-gray-800 rounded-l-md"><iconedit-stub class="h-5 w-5"></iconedit-stub></button><button type="button" content="Delete" class="group hover_text-red-400 -ml-px rounded-r-md"><icontrash-stub class="h-5 w-5"></icontrash-stub></button></span>`;

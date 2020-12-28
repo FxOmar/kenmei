@@ -1,10 +1,10 @@
 <template lang="pug">
-  .relative.inline-block.text-left
+  .base-dropdown
     button(@click='open = !open')
       icon-dots-vertical.h-5.w-5
-    button.fixed.inset-0.h-full.w-full.cursor-default(
+    button.fixed.inset-0.h-full.w-full.cursor-default.z-20(
       ref="clickOffButton"
-      v-if='open'
+      v-show='open'
       @click='open = false'
       tabindex='-1'
     )
@@ -14,9 +14,10 @@
           .py-1
             a.group(
               v-for="(item, index) in items"
-              :key="index"
               href='#'
-              @click.prevent="handleClick(item.text)"
+              :key="index"
+              :class="classes(item)"
+              @click.prevent="handleClick(item)"
             )
               component.icon.group-hover_text-gray-500.group-focus_text-gray-500(
                 v-if="item.icon"
@@ -58,8 +59,15 @@
       });
     },
     methods: {
-      handleClick(itemText) {
-        this.$emit('click', itemText);
+      classes(item) {
+        return {
+          disabled: item.disabled,
+        };
+      },
+      handleClick(item) {
+        if (item.disabled) return;
+
+        this.$emit('click', item.text);
         this.open = false;
       },
     },
@@ -67,6 +75,12 @@
 </script>
 
 <style lang="scss" scoped>
+  .base-dropdown {
+    -webkit-tap-highlight-color: transparent;
+
+    @apply relative inline-block text-left;
+  }
+
   a {
     @apply flex items-center px-4 py-2 text-sm leading-5 text-gray-700;
 
@@ -76,6 +90,14 @@
 
     &:focus {
       @apply outline-none bg-gray-100 text-gray-900;
+    }
+
+    .disabled {
+      @apply opacity-50 cursor-not-allowed;
+
+      &:focus {
+        @apply bg-white text-gray-700;
+      }
     }
   }
 
