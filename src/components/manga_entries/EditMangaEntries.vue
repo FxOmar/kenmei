@@ -115,11 +115,14 @@
       },
     },
     watch: {
-      selectedEntries(entries, oldEntries) {
+      selectedEntries(entries) {
         if (entries.length) {
           this.selectedTagIDs = this.selectedTags();
+          const statusesSelected = [
+            ...new Set(entries.map((e) => e.attributes.status)),
+          ];
 
-          if (entries !== oldEntries && !this.isBulkUpdate) {
+          if (statusesSelected.length === 1) {
             this.selectedStatus = this.selectedEntry.attributes.status;
           }
         } else {
