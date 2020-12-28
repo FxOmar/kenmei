@@ -29,7 +29,7 @@
             mobile-pattern
             .relative.mx-auto.w-full.rounded-lg.shadow-lg.lg_max-w-6xl
               img.w-full.rounded(
-                src='@/assets/dashboard-preview.jpg'
+                src='@/assets/dashboard-preview.gif'
                 alt='Manga List preview'
               )
 </template>
