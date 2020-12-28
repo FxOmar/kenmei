@@ -1,18 +1,23 @@
 <template lang="pug">
   .relative.flex.items-start
     .absolute.flex.items-center.h-5
-      input.form-checkbox#checkbox(
+      input.form-checkbox(
         type='checkbox'
+        :id="checkboxID"
         :checked="value"
         :indeterminate.prop="indeterminate"
+        :disabled="disabled"
+        :class="{ 'opacity-50 cursor-not-allowed': disabled }"
         @change="$emit('input', $event.target.checked)"
       )
     .pl-7.text-sm.leading-5(v-if='$slots.default')
-      label.font-medium.text-gray-700(for="checkbox")
+      label.font-medium.text-gray-700(:for="checkboxID")
         slot
 </template>
 
 <script>
+  import uniqueId from 'lodash/uniqueId';
+
   export default {
     props: {
       value: {
@@ -23,9 +28,18 @@
         type: Boolean,
         default: false,
       },
+      disabled: {
+        type: Boolean,
+        default: false,
+      },
       label: {
         type: String,
         default: null,
+      },
+    },
+    computed: {
+      checkboxID() {
+        return uniqueId('checkbox-');
       },
     },
   };
