@@ -67,7 +67,7 @@
     }
 
     &:focus {
-      @apply border-blue-300 shadow-outline;
+      @apply outline-none border-blue-300 shadow-outline-blue;
     }
   }
 
@@ -79,7 +79,7 @@
     }
 
     &:focus {
-      @apply border-blue-700 shadow-outline;
+      @apply outline-none border-blue-300 shadow-outline-blue;
     }
   }
 
@@ -91,7 +91,7 @@
     }
 
     &:focus {
-      @apply border-green-500 shadow-outline;
+      @apply outline-none border-green-300 shadow-outline-green;
     }
   }
 
@@ -103,7 +103,7 @@
     }
 
     &:focus {
-      @apply border-gray-600 shadow-outline-red;
+      @apply outline-none border-gray-300 shadow-outline-gray;
     }
   }
 
@@ -115,7 +115,7 @@
     }
 
     &:focus {
-      @apply border-yellow-500 shadow-outline-red;
+      @apply outline-none border-yellow-300 shadow-outline-yellow;
     }
   }
 
@@ -127,7 +127,7 @@
     }
 
     &:focus {
-      @apply border-red-700 shadow-outline-red;
+      @apply outline-none border-red-300 shadow-outline-red;
     }
   }
 
