@@ -1,4 +1,5 @@
 import axios from 'axios';
+import createAuthRefreshInterceptor from 'axios-auth-refresh';
 import qs from 'qs';
 
 const DEV_API_URL = 'http://localhost:3000';
@@ -8,8 +9,8 @@ const currentEnv = () => (
   process.env.NODE_ENV === 'production' ? PRODUCTION_API_URL : DEV_API_URL
 );
 
-const logOutFailed = (response) => response.config.method === 'delete'
-  && response.data.error === 'Signature has expired';
+const islogOutRequest = (request) => request.method === 'delete'
+  && request.url.includes('sessions');
 
 const setAuthConfig = (config) => {
   const token = localStorage.getItem('access');
@@ -32,29 +33,27 @@ const baseConfig = {
 const secure = axios.create(baseConfig);
 const plain  = axios.create(baseConfig);
 
+const refreshAuthLogic = (failedRequest) => plain
+  .post('/refresh')
+  .then((response) => {
+    const { access } = response.data;
+
+    localStorage.access = access;
+    failedRequest.response.config.headers.Authorization = `Bearer ${access}`;
+
+    return Promise.resolve();
+  }).catch(() => {
+    delete localStorage.access;
+    delete localStorage.vuex;
+
+    if (islogOutRequest(failedRequest.config)) return Promise.resolve();
+
+    window.location.reload(true);
+  });
+
 plain.interceptors.request.use((config) => setAuthConfig(config));
 secure.interceptors.request.use((config) => setAuthConfig(config));
-secure.interceptors.response.use(null, (error) => {
-  const { response } = error;
-  const { config, status } = response;
 
-  if (response && config && status === 401 && !logOutFailed(response)) {
-    return plain
-      .post('/refresh')
-      .then((response) => {
-        localStorage.access = response.data.access;
-
-        return plain.request(error.response.config);
-      }).catch(() => {
-        delete localStorage.access;
-        delete localStorage.vuex;
-
-        window.location.reload(true);
-
-        return plain.request(error.response.config);
-      });
-  }
-  return Promise.reject(error);
-});
+createAuthRefreshInterceptor(secure, refreshAuthLogic);
 
 export { secure, plain };
