@@ -3,7 +3,6 @@ import qs from 'qs';
 
 const baseURL = '/api/v2/manga_entries';
 
-/* eslint-disable import/prefer-default-export, object-curly-newline */
 export const index = (page, status, tagIDs, searchTerm, sort) => secure
   .get(baseURL, {
     params: {
@@ -15,4 +14,14 @@ export const index = (page, status, tagIDs, searchTerm, sort) => secure
   })
   .then((response) => response)
   .catch((request) => request.response);
-/* eslint-enable import/prefer-default-export */
+export const pagyInfo = (page, status, tagIDs, searchTerm, sort) => secure
+  .get(`${baseURL}/pagy_info`, {
+    params: {
+      page, status, user_tag_ids: tagIDs, search_term: searchTerm, sort,
+    },
+    paramsSerializer: (params) => qs.stringify(params, {
+      arrayFormat: 'brackets',
+    }),
+  })
+  .then((response) => response)
+  .catch((request) => request.response);

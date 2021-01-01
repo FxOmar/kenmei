@@ -53,4 +53,52 @@ describe('/v2/manga_entries', () => {
       });
     });
   });
+
+  describe('pagyInfo()', () => {
+    let pagyInfoSpy;
+
+    beforeEach(() => {
+      pagyInfoSpy = jest.spyOn(axios, 'get');
+    });
+
+    describe('makes a request to the resource', () => {
+      it('returns response', async () => {
+        axios.get.mockResolvedValue({ status: 200 });
+
+        const params = {
+          page: 1,
+          status: 'reading',
+          tagIDs: [],
+          searchTerm: '',
+          sort: { Title: 'asc' },
+        };
+
+        const successful = await resource.pagyInfo(...Object.values(params));
+
+        expect(successful.status).toBe(200);
+        expect(pagyInfoSpy).toHaveBeenCalledWith(
+          '/api/v2/manga_entries/pagy_info',
+          expect.objectContaining({
+            params: {
+              page: params.page,
+              status: params.status,
+              user_tag_ids: params.tagIDs,
+              search_term: params.searchTerm,
+              sort: params.sort,
+            },
+          }),
+        );
+      });
+    });
+
+    describe('makes a failed request to the resource', () => {
+      it('returns response with error status', async () => {
+        axios.get.mockRejectedValue({ response: { status: 500 } });
+
+        const successful = await resource.pagyInfo({});
+
+        expect(successful.status).toBe(500);
+      });
+    });
+  });
 });
