@@ -211,6 +211,16 @@ describe('lists', () => {
         expect(state.entriesLoading).toBeTruthy();
       });
     });
+
+    describe('setEntriesUpdating', () => {
+      it('sets entriesLoading state', () => {
+        const state = { entriesUpdating: false };
+
+        lists.mutations.setEntriesUpdating(state, true);
+
+        expect(state.entriesUpdating).toBeTruthy();
+      });
+    });
   });
 
   describe('actions', () => {
