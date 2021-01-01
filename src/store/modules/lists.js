@@ -21,6 +21,7 @@ const state = {
   ],
   tagsLoading: false,
   entriesLoading: true,
+  entriesUpdating: false,
   checkboxToggled: false,
 };
 
@@ -96,11 +97,19 @@ const mutations = {
   replaceEntry(state, { currentEntry, newEntry }) {
     state.entries.splice(getEntryIndex(state, currentEntry.id), 1, newEntry);
   },
+  removeEntries(state, entryIDs) {
+    state.entries = state.entries.filter(
+      (mangaEntry, _index, _arr) => !entryIDs.includes(mangaEntry.id),
+    );
+  },
   setTagsLoading(state, data) {
     state.tagsLoading = data;
   },
   setEntriesLoading(state, data) {
     state.entriesLoading = data;
+  },
+  setEntriesUpdating(state, data) {
+    state.entriesUpdating = data;
   },
 };
 
