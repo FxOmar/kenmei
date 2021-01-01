@@ -55,6 +55,17 @@ const actions = {
 
     commit('setEntriesLoading', false);
   },
+  async getEntriesPagy({ commit }, { page, status, tagIDs, searchTerm, sort }) {
+    const response = await mangaEntries.pagyInfo(
+      page, status, tagIDs, searchTerm, sort,
+    );
+
+    if (response.status === 200) {
+      commit('setEntriesPagy', response.data);
+    } else {
+      Message.error(response.data.error);
+    }
+  },
 };
 
 const mutations = {
