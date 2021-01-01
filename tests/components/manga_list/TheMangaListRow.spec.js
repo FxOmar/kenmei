@@ -26,10 +26,6 @@ const toggleSelectedEntry = (store, entry) => {
   store.state.lists.selectedEntries = [entry];
   store.state.lists.checkboxToggled = true;
 };
-const resetSelectedEntries = (store) => {
-  store.state.lists.selectedEntries = [];
-  store.state.lists.checkboxToggled = false;
-};
 
 describe('TheMangaListRow.vue', () => {
   let store;
@@ -51,7 +47,7 @@ describe('TheMangaListRow.vue', () => {
       modules: {
         lists: {
           namespaced: true,
-          state: lists.state,
+          state: { ...lists.state },
           mutations: lists.mutations,
           getters: lists.getters,
         },
@@ -77,7 +73,9 @@ describe('TheMangaListRow.vue', () => {
 
   describe('when specific entry is loading', () => {
     beforeEach(() => {
-      mangaListRow.setData({ entryLoading: true });
+      store.state.lists.entriesLoading = false;
+      store.state.lists.entriesUpdating = true;
+      toggleSelectedEntry(store, entry);
     });
 
     it('show skeleton loader with disabled checkbox', () => {
@@ -112,7 +110,6 @@ describe('TheMangaListRow.vue', () => {
 
     describe('and item is selected with checkboxToggled true', () => {
       beforeEach(() => { toggleSelectedEntry(store, entry); });
-      afterEach(() => { resetSelectedEntries(store); });
 
       it('toggles checkbox', () => {
         expect(mangaListRow.findComponent(FormCheckbox).attributes('value'))
@@ -132,7 +129,6 @@ describe('TheMangaListRow.vue', () => {
 
       describe('for item already selected', () => {
         beforeEach(() => { toggleSelectedEntry(store, entry); });
-        afterEach(() => { resetSelectedEntries(store); });
 
         it('does nothing', () => {
           expect(store.state.lists.checkboxToggled).toBeTruthy();
@@ -176,17 +172,20 @@ describe('TheMangaListRow.vue', () => {
         jest.restoreAllMocks();
       });
 
-      it('toggles entryLoading', async () => {
+      it('toggles selectedEntries with entriesUpdating', async () => {
         updateMangaEntryMock.mockResolvedValue(false);
 
         mangaListRow.findComponent(IconButtonGroup).vm
           .$emit('click', 'Set chapter to last read');
 
-        expect(mangaListRow.vm.$data.entryLoading).toBeTruthy();
+        expect(store.state.lists.selectedEntries).toContain(entry);
+        expect(store.state.lists.checkboxToggled).toBeFalsy();
+        expect(store.state.lists.entriesUpdating).toBeTruthy();
 
         await flushPromises();
 
-        expect(mangaListRow.vm.$data.entryLoading).toBeFalsy();
+        expect(store.state.lists.selectedEntries).toEqual([]);
+        expect(store.state.lists.entriesUpdating).toBeFalsy();
       });
 
       it('mutates the state and shows success message', async () => {
