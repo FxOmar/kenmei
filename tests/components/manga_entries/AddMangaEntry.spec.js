@@ -132,7 +132,7 @@ describe('AddMangaEntry.vue', () => {
           await flushPromises();
 
           expect(store.state.lists.entries).toContain(mangaEntry);
-          expect(addMangaEntry.emitted('dialogClosed')).toBeTruthy();
+          expect(addMangaEntry.emitted('entry-added')).toBeTruthy();
         });
       });
 
@@ -171,7 +171,7 @@ describe('AddMangaEntry.vue', () => {
 
           expect(store.state.lists.entries).not.toContain(oldEntry);
           expect(store.state.lists.entries).toContain(newMangaEntry);
-          expect(addMangaEntry.emitted('dialogClosed')).toBeTruthy();
+          expect(addMangaEntry.emitted('entry-added')).toBeTruthy();
         });
       });
 

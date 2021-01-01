@@ -177,7 +177,7 @@
             this.addEntry(entryData);
           }
 
-          this.$emit('dialogClosed');
+          this.$emit('entry-added');
 
           Message.info('New Entry added');
         } else if (status === 404 || status === 406) {

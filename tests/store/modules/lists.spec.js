@@ -318,5 +318,64 @@ describe('lists', () => {
         expect(commit).not.toHaveBeenCalledWith('setEntriesPagy');
       });
     });
+
+    describe('getEntriesPagy', () => {
+      let params;
+
+      beforeEach(() => {
+        params = {
+          page: 1,
+          status: 'reading',
+          tagIDs: [],
+          searchTerm: '',
+          sort: { Title: 'asc' },
+        };
+      });
+
+      it('retrieves pagy object from the API', async () => {
+        const mangaEntriesSpy = jest.spyOn(mangaEntries, 'pagyInfo');
+        const data = {
+          count: 1,
+          from: 1,
+          items: 1,
+          last: 1,
+          next: null,
+          offset: 0,
+          outset: 0,
+          page: 1,
+          pages: 1,
+          prev: null,
+          to: 1,
+        };
+
+        mangaEntriesSpy.mockResolvedValue({
+          status: 200, data,
+        });
+
+        lists.actions.getEntriesPagy({ commit }, params);
+
+        await flushPromises();
+
+        expect(mangaEntriesSpy).toHaveBeenCalledWith(...Object.values(params));
+        expect(commit).toHaveBeenCalledWith('setEntriesPagy', data);
+      });
+
+      it('shows error message if request has failed', async () => {
+        const mangaEntriesSpy = jest.spyOn(mangaEntries, 'pagyInfo');
+        const errorMessageSpy = jest.spyOn(Message, 'error');
+
+        const data = { error: 'Pagination failed' };
+
+        mangaEntriesSpy.mockResolvedValue({ status: 500, data });
+
+        lists.actions.getEntriesPagy({ commit }, params);
+
+        await flushPromises();
+
+        expect(mangaEntriesSpy).toHaveBeenCalledWith(...Object.values(params));
+        expect(errorMessageSpy).toHaveBeenLastCalledWith(data.error);
+        expect(commit).not.toHaveBeenCalledWith('setEntriesPagy');
+      });
+    });
   });
 });
