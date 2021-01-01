@@ -167,7 +167,9 @@
       ...mapMutations('lists', [
         'setSelectedEntries',
         'setTagsLoading',
+        'setEntriesUpdating',
         'updateEntry',
+        'removeEntries',
       ]),
       deleteEntries() {
         if (this.trackedEntriesIDs.length > this.selectedEntriesIDs.length) {
@@ -177,18 +179,36 @@
         }
       },
       async removeSeries() {
+        this.setEntriesUpdating(true);
+
         const successful = await bulkDeleteMangaEntries(this.trackedEntriesIDs);
 
         if (successful) {
           Message.info(`${this.trackedEntriesIDs.length} entries deleted`);
-          await this.changePage(this.entriesPagy.page);
+
+          if (this.entriesPagy.page > 1 && this.selectedEntriesIDs.length === this.entriesPagy.items) {
+            await this.changePage(this.entriesPagy.prev);
+          } else {
+            await this.getEntriesPagy({
+              page: this.entriesPagy.page,
+              ...this.filters,
+              sort: this.selectedSort,
+            });
+
+            this.removeEntries(this.trackedEntriesIDs);
+            this.resetSelectedAttributes();
+          }
         } else {
           Message.error(
             'Deletion failed. Try reloading the page before trying again',
           );
         }
+
+        this.setEntriesUpdating(false);
       },
       async updateEntries() {
+        this.setEntriesUpdating(true);
+
         const attributes = this.selectedEntries.map((entry) => ({
           id: entry.id,
           last_volume_read: entry.attributes.last_volume_available,
@@ -206,6 +226,8 @@
         } else {
           Message.error("Couldn't update. Try refreshing the page");
         }
+
+        this.setEntriesUpdating(false);
       },
       async changePage(page) {
         this.setTagsLoading(true);
