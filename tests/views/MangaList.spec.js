@@ -90,10 +90,23 @@ describe('MangaList.vue', () => {
       expect(modal.element).toBeVisible();
     });
 
-    describe('@events', () => {
-      it('@dialogClosed - closes add manga dialog', () => {
+    describe('and dialog got closed', () => {
+      it('closes add manga dialog', () => {
         mangaList.findComponent(AddMangaEntry).vm.$emit('dialogClosed');
 
+        expect(mangaList.vm.$data.dialogVisible).toBe(false);
+      });
+    });
+
+    describe('and entry was added', () => {
+      it('fetches new pagy object and closes the dialog', async () => {
+        const getEntriesPagySpy = jest.spyOn(mangaList.vm, 'getEntriesPagy')
+
+        mangaList.findComponent(AddMangaEntry).vm.$emit('entry-added');
+
+        await flushPromises();
+
+        expect(getEntriesPagySpy).toHaveBeenCalled();
         expect(mangaList.vm.$data.dialogVisible).toBe(false);
       });
     });

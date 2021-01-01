@@ -32,6 +32,7 @@
         :visible="dialogVisible"
         :currentStatus="selectedStatus"
         @dialogClosed='dialogVisible = false'
+        @entry-added='updatePagy'
       )
       edit-manga-entries(
         ref='editMangaEntryModal'
@@ -161,6 +162,7 @@
       ...mapActions('lists', [
         'getTags',
         'getEntries',
+        'getEntriesPagy',
       ]),
       ...mapMutations('lists', [
         'setSelectedEntries',
@@ -223,6 +225,15 @@
         await this.getEntries({ page: 1, ...this.filters, sort });
 
         this.setTagsLoading(false);
+      },
+      async updatePagy() {
+        await this.getEntriesPagy({
+          page: this.entriesPagy.page,
+          ...this.filters,
+          sort: this.selectedSort,
+        });
+
+        this.dialogVisible = false;
       },
       resetEntries(dialogName) {
         this[dialogName] = false;
