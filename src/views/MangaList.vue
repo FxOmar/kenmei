@@ -41,7 +41,7 @@
       )
       delete-manga-entries(
         :visible='deleteDialogVisible'
-        @dialogClosed='deleteDialogVisible = false'
+        @dialogClosed="resetEntries('deleteDialogVisible')"
         @confirmDeletion='deleteDialogVisible = false; removeSeries()'
       )
       report-manga-entries(
@@ -167,6 +167,7 @@
       ...mapMutations('lists', [
         'setSelectedEntries',
         'setTagsLoading',
+        'setEntriesUpdating',
         'updateEntry',
       ]),
       deleteEntries() {
@@ -177,6 +178,8 @@
         }
       },
       async removeSeries() {
+        this.setEntriesUpdating(true);
+
         const successful = await bulkDeleteMangaEntries(this.trackedEntriesIDs);
 
         if (successful) {
@@ -187,8 +190,12 @@
             'Deletion failed. Try reloading the page before trying again',
           );
         }
+
+        this.setEntriesUpdating(false);
       },
       async updateEntries() {
+        this.setEntriesUpdating(true);
+
         const attributes = this.selectedEntries.map((entry) => ({
           id: entry.id,
           last_volume_read: entry.attributes.last_volume_available,
@@ -206,6 +213,8 @@
         } else {
           Message.error("Couldn't update. Try refreshing the page");
         }
+
+        this.setEntriesUpdating(false);
       },
       async changePage(page) {
         this.setTagsLoading(true);

@@ -21,6 +21,7 @@ const state = {
   ],
   tagsLoading: false,
   entriesLoading: true,
+  entriesUpdating: false,
   checkboxToggled: false,
 };
 
@@ -101,6 +102,9 @@ const mutations = {
   },
   setEntriesLoading(state, data) {
     state.entriesLoading = data;
+  },
+  setEntriesUpdating(state, data) {
+    state.entriesUpdating = data;
   },
 };
 

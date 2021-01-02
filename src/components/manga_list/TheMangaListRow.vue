@@ -8,11 +8,11 @@
     .flex.items-center.px-4.py-4
       base-form-checkbox.h-5.w-4(
         :value='itemSelected'
-        :disabled='entriesLoading'
+        :disabled='entriesLoading || itemLoading'
         :class='checkBoxClasses'
         @input="selectEntry"
       )
-      row-skeleton(v-if="entriesLoading || entryLoading")
+      row-skeleton(v-if="entriesLoading || itemLoading")
       template(v-else)
         span.relative(:class="pingClasses")
           span(v-if="!item.attributes.unread")
@@ -55,15 +55,11 @@
         required: true,
       },
     },
-    data() {
-      return {
-        entryLoading: false,
-      };
-    },
     computed: {
       ...mapState('lists', [
         'selectedEntries',
         'entriesLoading',
+        'entriesUpdating',
         'checkboxToggled',
       ]),
       ...mapGetters('lists', [
@@ -89,6 +85,9 @@
       },
       itemSelected() {
         return this.selectedEntries.includes(this.item) && this.checkboxToggled;
+      },
+      itemLoading() {
+        return this.selectedEntries.includes(this.item) && this.entriesUpdating;
       },
       lastReadTranslation() {
         const { last_chapter_available, unread } = this.item.attributes;
@@ -145,6 +144,7 @@
         'updateEntry',
         'addSelectedEntry',
         'setSelectedEntries',
+        'setEntriesUpdating',
       ]),
       editModeSelection(e) {
         if (!this.selectionModeActive) return;
@@ -166,7 +166,9 @@
         }
       },
       async setLastRead() {
-        this.entryLoading = true;
+        this.addSelectedEntry({ entry: this.item, isCheckbox: false });
+        this.setEntriesUpdating(true);
+
         const { id } = this.item;
 
         const response = await updateMangaEntry(id, this.updateAttributes);
@@ -177,7 +179,8 @@
           Message.error("Couldn't update. Try refreshing the page");
         }
 
-        this.entryLoading = false;
+        this.setEntriesUpdating(false);
+        this.setSelectedEntries({ entries: [], isCheckbox: false });
       },
       handleClick(action) {
         if (action === 'Edit') {
