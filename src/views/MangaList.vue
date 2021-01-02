@@ -41,7 +41,7 @@
       )
       delete-manga-entries(
         :visible='deleteDialogVisible'
-        @dialogClosed='deleteDialogVisible = false'
+        @dialogClosed="resetEntries('deleteDialogVisible')"
         @confirmDeletion='deleteDialogVisible = false; removeSeries()'
       )
       report-manga-entries(
