@@ -36,11 +36,11 @@
       return {
         landing: false,
         updateBanner: {
-          id: 11,
-          link: 'https://news.kenmei.co/monthly-updates/2020/november',
+          id: 12,
+          link: 'https://news.kenmei.co/monthly-updates/2020/december',
           message: `
-            Status page release + improvements to auto-updating, site
-            availability tracking and source deprecation system.
+            Month of Kenmei is over and with it comes Dashboard v2, on mobile
+            as well as desktop
           `,
           mobileText: 'Check out the latest monthly update',
         },
