@@ -11,9 +11,21 @@ export const index = (page, status, tagIDs, searchTerm, sort) => secure
     paramsSerializer: (params) => qs.stringify(params, {
       arrayFormat: 'brackets',
     }),
+    timeout: 3000,
   })
   .then((response) => response)
-  .catch((request) => request.response);
+  .catch((request) => {
+    if (request.message.includes('timeout')) {
+      return {
+        status: 408,
+        data: {
+          error: 'Something went wrong, try again later or contact hi@kenmei.co',
+        },
+      };
+    }
+
+    return request.response;
+  });
 export const pagyInfo = (page, status, tagIDs, searchTerm, sort) => secure
   .get(`${baseURL}/pagy_info`, {
     params: {
