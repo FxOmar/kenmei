@@ -1,7 +1,12 @@
 import { secure } from '@/modules/axios';
+import * as rax from 'retry-axios';
 import qs from 'qs';
 
 const baseURL = '/api/v2/manga_entries';
+
+secure.defaults.raxConfig = { instance: secure };
+
+rax.attach(secure); // Attach Retry interceptor to secure instance
 
 export const index = (page, status, tagIDs, searchTerm, sort) => secure
   .get(baseURL, {
@@ -12,10 +17,14 @@ export const index = (page, status, tagIDs, searchTerm, sort) => secure
       arrayFormat: 'brackets',
     }),
     timeout: 3000,
+    raxConfig: {
+      retry: 1,
+      statusCodesToRetry: [[408]],
+    },
   })
   .then((response) => response)
   .catch((request) => {
-    if (request.message.includes('timeout')) {
+    if (request.message && request.message.includes('timeout')) {
       return {
         status: 408,
         data: {
