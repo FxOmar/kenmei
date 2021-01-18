@@ -6,12 +6,6 @@ import * as userTags from '@/services/endpoints/UserTags';
 import * as mangaEntries from '@/services/endpoints/v2/manga_entries';
 
 describe('lists', () => {
-  let defaultState;
-
-  beforeEach(() => {
-    defaultState = { ...lists.state };
-  });
-
   describe('getters', () => {
     describe('findEntryFromIDs', () => {
       it('returns first found entry based on entry IDs being passed', () => {
@@ -324,7 +318,7 @@ describe('lists', () => {
 
         mangaEntriesSpy.mockResolvedValue({ status: 500, data });
 
-        lists.actions.getEntries({ commit, state: defaultState }, params);
+        lists.actions.getEntries({ commit }, params);
 
         await flushPromises();
 
