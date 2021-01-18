@@ -40,7 +40,7 @@ const actions = {
 
     return status === 200 ? commit('setTags', data) : Message.error(data.error);
   },
-  async getEntries({ commit, state }, { page, status, tagIDs, searchTerm, sort }) {
+  async getEntries({ commit }, { page, status, tagIDs, searchTerm, sort }) {
     commit('setEntriesLoading', true);
 
     const response = await mangaEntries.index(
@@ -51,7 +51,6 @@ const actions = {
       commit('setEntries', response.data.entries);
       commit('setEntriesPagy', response.data.pagy);
     } else {
-      commit('setEntriesPagy', { ...state.entriesPagy });
       Message.error(response.data.error);
     }
 
