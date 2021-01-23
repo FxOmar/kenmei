@@ -60,7 +60,7 @@
     "flush-promises": "^1.0.2",
     "jest-mock-axios": "^4.2.1",
     "pug": "^2.0.4",
-    "sass": "^1.23.3",
+    "sass": "^1.32.5",
     "sass-loader": "^8.0.2",
     "tailwindcss": "^1.9.6",
     "vue-cli-plugin-element": "^1.0.1",
