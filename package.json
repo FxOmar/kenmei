@@ -44,7 +44,7 @@
     "vuex-persist": "^2.2.0"
   },
   "devDependencies": {
-    "@kazupon/vue-i18n-loader": "^0.3.0",
+    "@kazupon/vue-i18n-loader": "^0.5.0",
     "@percy/storybook": "^3.3.1",
     "@storybook/addon-essentials": "^6.0.26",
     "@storybook/addon-links": "^6.0.26",
