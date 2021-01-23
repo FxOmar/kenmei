@@ -14,7 +14,7 @@
     "snapshot": "vue-cli-service storybook:build -c config/storybook && percy-storybook --widths=320,1280"
   },
   "dependencies": {
-    "@tailwindcss/ui": "~0.6.2",
+    "@tailwindcss/ui": "~0.7.2",
     "add": "^2.0.6",
     "axios": "^0.21.1",
     "axios-auth-refresh": "^3.0.0",
