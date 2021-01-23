@@ -6,6 +6,7 @@
 [![Build Status](https://travis-ci.org/doutatsu/kenmei.svg?branch=master)](https://travis-ci.org/doutatsu/kenmei)
 [![Maintainability](https://api.codeclimate.com/v1/badges/e8a7e79a8d644f34fb8d/maintainability)](https://codeclimate.com/github/doutatsu/kenmei/maintainability)
 [![Coverage Status](https://coveralls.io/repos/github/doutatsu/kenmei/badge.svg?branch=master)](https://coveralls.io/github/doutatsu/kenmei?branch=master)
+[![This project is using Percy.io for visual regression testing.](https://percy.io/static/images/percy-badge.svg)](https://percy.io/Studio-Shogun/Kenmei)
 [![Discord](https://img.shields.io/discord/674976622188691456?label=Discord)](https://discord.gg/XeTFtYW)
 [![Twitter Follow](https://img.shields.io/twitter/follow/KenmeiApp?label=Kenmei&style=social)](https://twitter.com/KenmeiApp)
 
