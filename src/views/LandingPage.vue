@@ -22,8 +22,6 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex';
-
   import HeroSection from '@/components/landing_page/LandingPageHeroSection';
   import Features from '@/components/landing_page/LandingPageFeatures';
   import Stats from '@/components/landing_page/LandingPageStats';
@@ -44,16 +42,10 @@
     },
     data() {
       return {
-        open: false,
         loading: false,
         signOnVisible: false,
         activeComponent: 'TheSignUp',
       };
-    },
-    computed: {
-      ...mapGetters('user', [
-        'signedIn',
-      ]),
     },
     methods: {
       openSignOnWith(comp) {
