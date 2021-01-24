@@ -72,7 +72,15 @@
     },
     filters: {
       timeAgo(datetime) {
-        return dayjs().to(dayjs(datetime));
+        const relative = dayjs().to(dayjs(datetime));
+
+        // TODO: I should evalute if I can update configuration directly
+        // https://day.js.org/docs/en/customization/relative-time
+        if (['in a few seconds', 'a few seconds ago'].includes(relative)) {
+          return 'just now';
+        }
+
+        return relative;
       },
     },
     props: {

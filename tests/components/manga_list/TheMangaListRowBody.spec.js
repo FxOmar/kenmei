@@ -1,7 +1,7 @@
-import TheMangaListRowBody from '@/components/manga_list/TheMangaListRowBody.vue';
-import Chapter from '@/components/manga_list/TheMangaListRowBodyChapter.vue';
-
 import Vuex from 'vuex';
+import dayjs from 'dayjs';
+
+import TheMangaListRowBody from '@/components/manga_list/TheMangaListRowBody.vue';
 
 import lists from '@/store/modules/lists';
 
@@ -66,6 +66,36 @@ describe('TheMangaListRowBody.vue', () => {
 
       it("shows haven't read yet", () => {
         expect(rowBody.text()).toContain("Haven't read yet");
+      });
+    });
+  });
+
+  describe('when last read is known', () => {
+    describe('and it was couple seconds in the future', () => {
+      beforeEach(() => {
+        entry = factories.entry.build({
+          attributes: { last_read_at: dayjs().add(10, 'second') },
+        });
+
+        rowBody.setProps({ item: entry });
+      });
+
+      it('shows just now as last read', () => {
+        expect(rowBody.text()).toContain('Read just now');
+      });
+    });
+
+    describe('and it was in the past few seconds', () => {
+      beforeEach(() => {
+        entry = factories.entry.build({
+          attributes: { last_read_at: dayjs().subtract(10, 'second') },
+        });
+
+        rowBody.setProps({ item: entry });
+      });
+
+      it('shows just now as last read', () => {
+        expect(rowBody.text()).toContain('Read just now');
       });
     });
   });
